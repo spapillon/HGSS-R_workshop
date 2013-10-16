@@ -1,0 +1,184 @@
+\documentclass[a4paper,11pt]{article}
+
+%%%%%%%%%%%%%%%%%%%
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{rotating}
+\usepackage{graphicx}
+\usepackage[colorlinks=true]{hyperref}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{multirow}
+\usepackage{array}
+\usepackage{ulem}
+
+%---%
+\textheight 26cm
+\textwidth 16cm
+%\oddsidemargin 0cm
+%\evensidemargin 0cm
+\topmargin -20mm
+\hoffset -15mm
+\voffset -0mm
+%---%               
+
+%
+\title{R (Practical) Commands Summary}
+\author{\tiny HGSS Workshop 2013}
+\date{}
+
+\begin{document}
+\maketitle
+
+%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%
+\paragraph{R control} (source)
+\begin{itemize} 
+  \item Quit R; Load a library; Get help about a function. \\
+    \verb!q(); library(theLibraryYouWant); help(plot); ?plot!
+  \item Comment code. \\
+    \verb!## This is a comment, it won't be interpreted by R!
+\end{itemize}
+
+%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%
+\paragraph{Data import/export}
+\begin{itemize} 
+  \item Write/read a vector in a file. \\ 
+    \verb!write(vec,"file.txt",sep="\n")! \\
+    \verb!scan(file="file.txt",what="a"); scan(vec,file="file.txt",what=1)!
+  \item Write/read a table in a file. \\ 
+    \verb!write.table(t,file="file.txt",quote=FALSE,sep="\t",row.names=FALSE)! \\
+    \verb!read.table("file.txt",as.is=TRUE,header=TRUE)! 
+  \item Save/load R objects. \\
+    \verb!save(study.res1, study,res2,file="file.RData")! \\
+    \verb!load("file.RData")!
+\end{itemize}
+
+
+%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%
+\paragraph{Data creation}
+\begin{itemize}
+  \item Concatenate into a vector. \\ 
+    \verb!c(1,10,44); c("toto","tata","titi"); c(TRUE, TRUE, FALSE)!
+  \item Vector from $1$ to $10$; with ten ones; from $1$ to $10$ every $0.5$. \\ 
+    \verb!1:10; rep(1,10); seq(1,10,0.5)!
+  \item Create matrix, e.g with numbers from $1$ to $12$ with $3$ rows and $4$ columns\\
+    \verb!matrix(1:12,3,4)!
+  \item Bind matrices on their row/columns. \\
+    \verb!rbind(matrix1, matrix2); cbind(matrix1, matrix2)!
+  \item Create list. \\
+    \verb!list(elt1=1:10, anotherElt=matrix(1:12,3,4))!
+  \item Create a data.frame.\\
+    \verb!data.frame(oneToTen=1:10,elevenToTwenty=11:20)!
+\end{itemize}
+
+
+%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%
+\paragraph{Data characterization} 
+\begin{itemize} 
+  \item Display information about the object structure\\ 
+    \verb!str(mat); str(veryComplexList)!
+  \item Length of a vector; dimension of a matrix or individually the number of rows and columns.\\
+    \verb!length(vec); dim(mat); nrow(mat); ncol(mat)!
+  \item Get or set the names of the vector's values; or matrix rows/columns.\\
+    \verb!names(vec); rownames(mat); colnames(mat)! \\
+    \verb!names(vec) = c("one","two","three")!
+\end{itemize}
+
+
+%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%
+\paragraph{Data exploration} 
+\begin{itemize} 
+\item Print the beginning/end of an object.\\ 
+  \verb!head(vec); head(mat); tail(vec); tail(vec)!
+\item Access element from vector, matrix or list.\\ 
+  \verb!vec[1]; vec[2:4]; mat[1,1]; mat[2:4,6:7]; list[[1]]!
+\item Display summary statistics of a vector or matrix.\\ 
+  \verb!summary(vec); summary(mat)!
+\item Print the sum, mean, minimum, maximum value of a vector or matrix.\\ 
+  \verb!sum(vec); mean(mat); minimum(vec); maximum(mat)!
+\item Same with the median, variance, standard deviation.\\ 
+  \verb!median(vec); var(vec); sd(vec) !
+\item Count the how many times values are repeated in a vector.\\ 
+  \verb!table(vec)!
+\item Correlation between two vector of the \uline{same length}.\\ 
+  \verb!cor(vec1,vec2)!
+\end{itemize}
+
+
+%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%
+\paragraph{Data manipulation} sort, rev, apply, lapply, (sample), subset
+\begin{itemize} 
+  \item TODO \\ 
+    \verb!!
+\end{itemize}
+
+
+%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%
+\paragraph{Boolean} ==, !=, ><=, \%in\%, any, which, sum
+\begin{itemize} 
+  \item TODO \\ 
+    \verb!!
+\end{itemize}
+
+
+%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%
+\paragraph{Condition and loops} if, for, while
+\begin{itemize} 
+  \item TODO \\ 
+    \verb!!
+\end{itemize}
+
+
+%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%
+\paragraph{Strings} strsplit, gsub, paste, grep(l)
+\begin{itemize} 
+  \item TODO \\ 
+    \verb!!
+\end{itemize}
+
+%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%
+\paragraph{Simple plotting} plot, hist, line, pdf, png, dev.off(
+\begin{itemize} 
+  \item TODO \\ 
+    \verb!!
+\end{itemize}
+
+%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%
+\paragraph{Statistical tests and regression}  t.test, wilcox.test, chisq.test, lm
+\begin{itemize} 
+  \item TODO \\ 
+    \verb!!
+\end{itemize}
+
+
+\paragraph{Appendix} Valid names in R, tabulationand line character code
+\begin{itemize} 
+  \item TODO \\ 
+    \verb!!
+\end{itemize}
+
+\end{document}
+
