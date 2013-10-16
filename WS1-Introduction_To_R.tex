@@ -1,0 +1,686 @@
+%% Notes or not
+%%\documentclass[10pt,t,handout]{beamer}
+%%%%
+\documentclass[10pt]{beamer}
+%%
+\usepackage{pgfpages}
+\usepackage{graphicx}
+\usepackage{ulem}
+% get rid of junk
+\usetheme{default}
+\beamertemplatenavigationsymbolsempty
+\hypersetup{pdfpagemode=UseNone} % don't show bookmarks on initial view
+% font
+\usefonttheme{professionalfonts}
+\usefonttheme{serif}
+% page number
+\setbeamertemplate{footline}{%
+    \raisebox{5pt}{\makebox[\paperwidth]{\hfill\makebox[20pt]{\color{gray}
+          \scriptsize\insertframenumber}}}\hspace*{5pt}}
+% add a bit of space at the top of the notes page
+  \addtobeamertemplate{note page}{\setlength{\parskip}{12pt}}
+
+\setbeamertemplate{blocks}[rounded][shadow=true]
+
+% Notes or not
+\setbeameroption{show notes}
+%%\setbeamertemplate{note page}[plain]
+%%\pgfpagesuselayout{2 on 1}
+%%%%
+%%\setbeameroption{hide notes}
+
+\newenvironment{xframe}[2][]
+  {\begin{frame}[fragile,environment=xframe,#1]
+  \frametitle{#2}}
+  {\end{frame}}
+
+\title{Workshop: Introduction to R}
+\author{Jean Monlong \& Simon Papillon}
+\institute{Human Genetics department}
+\date{October 21, 2013}
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%
+%% Title Slide
+\begin{frame}
+  \titlepage
+  \centering
+  \includegraphics[page=1,height=.1\textheight]{../../imgs/McGill-Logo1.png}
+
+  \note{Welcome blabla, \\ 
+Who's a complete beginner ? \\ 
+Give me a R, give me a ... well that's it\\ 
+Potential addition: matrix fill up scheme, Rstudio use guide/slide, Tips box, Question box\\
+Exercises/data to prepare: \\nice/funny plots\\useful function\\debugging\\one-liner quiz.}
+\end{frame}
+
+%%%%
+%%%%%%%%%%%%%%%%%%%%%%%
+\section{Why learning R ?}
+%%%%%%%%%%%%%%%%%%%%%%%
+%%%%
+
+\begin{frame}{Why learning R ?}
+\begin{block}{Useful for your research}
+  \begin{itemize}
+  \item To explore your results. Curiosity and safety !
+  \item To do/understand your analysis. Independence and control !
+  \item To apply the latest Bioinformatics analyzes. Bioconductor !
+  \item To keep track of your analysis. Reproducibility and automation !
+    \bigskip
+  \item You do it, not some busy bioinformatician. 
+  \end{itemize}
+\end{block}
+\begin{block}{It's a good time investment}
+  \begin{description}
+  \item[Simple:] interpretative language(no compilation needed), no memory management, +++
+  \item[Free:] widely used, vast community of R users, good life expectancy.
+  \item[Multiplatform:] Windows, Mac, Unix, it works everywhere.
+  \end{description}
+\end{block}
+\note{671 packages in Bioconductor. Bioconductor provides tools for the analysis and comprehension of high-throughput genomic data.}
+\end{frame}
+
+%%%%%%%
+
+\begin{xframe}{Comparison to other languages}
+  Comparison with C ?
+  \note{The shuffle array example is good}
+\end{xframe}
+
+%%%%%%%
+
+\begin{frame}{R and Rstudio}
+  \begin{block}{Easy installation}
+    \begin{itemize}
+    \item Install R from  \\ \url{http://cran.r-project.org/}
+    \item Install Rstudio Desktop from \\ \url{http://www.rstudio.com/ide/download/desktop}
+    \end{itemize}
+  \end{block}
+  \centering
+  \bigskip
+  \includegraphics[page=1,height=.3\textheight]{Rstudio.png}
+
+  \note{Emacs+ESS on Linux, R console on Mac}
+\end{frame}
+
+
+
+%%%%
+%%%%%%%%%%%%%%%%%%%%%%%
+\section{Data structures}
+%%%%%%%%%%%%%%%%%%%%%%%
+%%%%
+
+\begin{frame}{Data structure - Overview}
+  \begin{block}{Unit type}
+    \begin{description}
+      \item[numeric] Numbers, e.g. $0$, $1$, $42$, $-66.6$.
+      \item[character] Words, e.g. ``male'', ``ENSG0007'',``Vive la France''.
+      \item[logical] Boolean: {\it TRUE} or {\it FALSE}.
+    \end{description}
+  \end{block}
+  \begin{block}{Container}
+    \begin{description}
+    \item[vector] Concatenation of elements of the same type.
+    \item[matrix] Matrix of element of the same type.
+    \item[list] Flexible container, mixed type possible. Recursive.
+    \item[data.frame] Table-like structure, same type within a column.  Recursive.
+    \end{description}
+  \end{block}
+\note{Other type but more complex and less useful, e.g. factors}
+\end{frame}
+
+
+%%% VECTORS
+%%%%%%%%%%%%%%%%%%%%
+\begin{xframe}{Vectors}
+  \begin{block}{Vector construction}
+    \begin{description}
+    \item[c] Concatenate function.
+    \item[1:10] Vector with numbers from 1 to 10.
+    \item[rep] Repeat element several times.
+    \end{description}
+  \end{block}
+  \begin{exampleblock}{Example}
+\begin{verbatim}
+luckyNumbers = c(4,8,15,16,23,42) 
+luckyNumbers
+oneToTen = 1:10
+tenOnes = rep(1,10)
+samples = c("sampA","sampB")
+samples
+\end{verbatim}
+  \end{exampleblock}
+  \begin{alertblock}{Everything is a vector}
+    is.vector(is.vector(1)) $->$ TRUE
+  \end{alertblock}
+\note{Questions: Create your own numbers and favorite group of friends/hockey player/star/genes.}
+\end{xframe}
+
+%%%%%%%
+
+\begin{xframe}[shrink=5]{Vectors}
+  \begin{block}{Characterization}
+    \begin{description}
+    \item[length] Number of element in the vector.
+    \item[names] Get or set the names of the vector.
+    \end{description}
+  \end{block}
+  \begin{block}{Manipulation}
+    \begin{description}
+    \item[{vec[i:j]} ]Subset a vector from $i^{th}$ to $j^{th}$ values.
+    \item[sort] Sort a vector.
+    \item[order] Get the index of the sorted elements.
+    \item[rev] Reverse a vector.
+    \item[sample] Shuffle a vector.
+    \end{description}
+  \end{block}
+  \begin{exampleblock}{Example}
+\begin{verbatim}
+length(luckyNumbers)
+luckyNumbers[2:4]
+names(luckyNumbers) = c("frank","henry","philip",
+                            "steve","tom","francis") 
+luckyNumbers
+luckyNumbers["philip"]
+rev(1:10)
+order(c(luckyNumbers,1:10,tenOnes))
+\end{verbatim}
+  \end{exampleblock}
+  \note{Square-brackets\\Questions: \\change the third number,\\ print a shuffle version of the vector \\add ``Jean'' at the end of the character vector, \\reverse it, \\make the reverse the new value.}
+\end{xframe}
+
+%%%%%%%
+
+\begin{xframe}{Vectors}
+  \begin{block}{Exploration}
+    \begin{description}
+    \item[head/tail] Print the first/last values.
+      \medskip
+    \item[{\bf\small On numeric vectors:}]
+    \item[summary] Summary statistics: minimum, mean, maximum, ...
+    \item[min/max/mean/var] Minimum, maximum, average, variance.
+    \item[sum] Sum of the vector's values.
+    \end{description}
+  \end{block}
+  \begin{exampleblock}{Example}
+\begin{verbatim}
+head(samples)
+summary(luckyNumbers)
+mean(luckyNumbers)
+\end{verbatim}
+  \end{exampleblock}
+\note{Tips: na.rm\\Questions:\\Show me the beginning of your numbers\\the names of your numbers\\change the name of the second value to something\\average value of this beginning\\the sum of the minimum and maximum value.}
+\end{xframe}
+
+%%%%%%%
+
+\begin{xframe}{Vectors}
+  \begin{block}{Operations}
+    \begin{itemize}
+    \item Simple arithmetic operations over all the values of the vector.
+    \item  Or values by values when using vectors of same length.
+    \item Arithmetic operation: +, -, *, /.
+    \end{itemize}
+  \end{block}
+\begin{exampleblock}{Example}
+\begin{verbatim}
+luckyNumbers * 4 - 2
+luckyNumber s* 1:length(luckyNumbers) - 
+                          rev(1:length(luckyNumbers))
+\end{verbatim}
+  \end{exampleblock}
+  \note{Let's apply it to the Exercise}
+\end{xframe}
+
+%%%%%%%
+
+\begin{frame}{Exercise - Guess my favorite number}
+  \begin{block}{Instructions}
+    \begin{enumerate}
+    \item Create a vector of {\it numeric} values. At least two values.
+    \item Multiply it by $6$.
+    \item Add $21$.
+    \item Divide it by $3$ 
+    \item Remove $1$.
+    \item Halve it.
+    \item Remove its original values.
+    \end{enumerate}
+  \end{block}
+
+  \note{Tips: save the original values somewhere or change the values of a new vector.}
+\end{frame}
+
+
+%%% MATRIX
+%%%%%%%%%%%%%%%%%%%%
+
+\begin{xframe}{Matrix}
+  \begin{block}{Specific to matrices}
+    \begin{description}
+    \item[matrix] Create a matrix.
+    \item[rbind/cbind] Concatenate vectors or matrix by row or column.
+    \item[{mat[i:j,k:l]} ] Subset from the $i$ to $j$ row and $k$ to $l$ column.
+    \item[dim] Dimension of the matrix: number of rows and columns.
+    \item[rownames/colnames] Get or set the names of the rows/columns.
+    \end{description}    
+  \end{block}
+  \begin{exampleblock}{Example}
+\begin{verbatim}
+mat = matrix(runif(12),3,4)
+colnames(mat) = c("col1","col2","col3","col4")
+rownames(mat) = c("row1","row2","row3")
+\end{verbatim}
+  \end{exampleblock}
+  \note{Questions: \\create 4x4 matrix with number from 1 to 16\\ the same but shuffled\\print the first column\\ the three first columns \\ Add an extra line to the matrix\\Print the new dimension}
+\end{xframe}
+
+%%%%%%%
+
+\begin{xframe}{Matrix}
+  \begin{block}{Same as {\sf vector}}
+    \begin{itemize}
+    \item {\sf length}, {\sf head}, {\sf tail}.
+    \item For numeric matrix: {\sf min}, {\sf max}, {\sf sum}, {\sf mean}.
+    \item Arithmetic operations: +, -, *, /.
+    \end{itemize}
+  \end{block}
+  \begin{exampleblock}{Example}
+\begin{verbatim}
+mean(mat)
+sum(mat) / length(mat)
+
+mat * 2
+mat + mat
+\end{verbatim}
+  \end{exampleblock}
+  \note{Questions:\\Average of the matrix\\Average of the first two columns\\ multiply by 2 and remove the matrix}
+\end{xframe}
+
+%%%%%%%
+
+\begin{xframe}{Lists}
+  \begin{block}{Flexible container}
+    E.g. can concatenate a {\sf vector} of {\it numeric} with a {\sf matrix} of {\it numeric} and a {\sf matrix} of {\it character}.
+    \begin{description}
+      \item[list] Create a list.
+      \item[{l[[i]]} ] Get or set the $i^{th}$ object of the list.
+      \item[l\$toto] Get or set the element labeled as {\it toto}.
+      \item[names] Get or set the names of the list elements.
+      \item[length] Get the number of element in the list.
+      \item[str] Output the structure of a R object.
+    \end{description}
+  \end{block}
+  \begin{exampleblock}{Example}
+\begin{verbatim}
+l = list(vec=1:10,mat=matrix(runif(25),5))
+str(l)
+l
+l$vec = 1
+l
+\end{verbatim}
+  \end{exampleblock}
+  \note{Questions:\\Make a 3-dimensional (4x4x4) data type using a list}
+\end{xframe}
+
+%%%%%%%
+
+\begin{frame}{Exercise}
+  \begin{enumerate}
+  \item Create a matrix of with 100 rows and 4 columns with random numbers inside. {\scriptsize\it Tip: {\sf runif} function for random numbers.}
+  \item Name the columns. E.g. {\it sampleA}, {\it sampleB}, ...
+  \item Print the name of the column with the largest mean value.
+  \item Print the name of the column with the largest value.
+  \end{enumerate}
+  \note{What if it had 100 rows...}
+\end{frame}
+
+%%%%%%%
+
+
+%%%%%%%
+\section{Functions}
+%%%%%%%
+
+\begin{xframe}{Functions}
+  \begin{block}{}
+    \begin{itemize}
+    \item Name of the function with arguments between parenthesis.
+    \item E.g. {\sf mean(x)}.
+    \end{itemize}
+  \end{block}
+  \begin{block}{Do your own}
+    \begin{itemize}
+      \item[function] To define functions.
+      \item All the object created within the function are temporary.
+      \item[return] Define what will be returned by the function. 
+    \end{itemize}
+  \end{block}
+  \begin{exampleblock}{Example}
+\begin{verbatim}
+almostMean = function(x){
+  x.mean = mean(x)
+  return(x.mean+1)
+}
+almostMean(0:10)
+x.mean
+\end{verbatim}
+  \end{exampleblock}
+  \note{Question:create a function that returns the power: pow <- function(base, exp) ...\\}
+\end{xframe}
+
+%%%%%%%
+
+\begin{xframe}{Functions - {\sf apply}}
+  \begin{block}{New best friend}
+    \begin{itemize}
+    \item Apply a function to row or columns of a 2 dimension data structure (matrix or data frame).
+    \item No manual iteration, the loop is implicit.
+    \item Second argument: $1$ means rows, $2$ means columns.
+    \end{itemize}
+  \end{block}
+  \begin{exampleblock}{Example}
+\begin{verbatim}
+apply(mat,1,mean)
+apply(mat,2,function(x){
+  x.mean = mean(x)
+  return(x.mean+1)
+})
+\end{verbatim}  
+  \end{exampleblock}
+  \note{Same for list, etc\\output}
+\end{xframe}
+
+%%%%%%%
+
+\begin{xframe}{Functions - {\sf lapply}}
+  \begin{block}{apply for lists}
+    \begin{itemize}
+    \item Useful way to iterate through lists.
+    \end{itemize}
+  \end{block}
+  \begin{exampleblock}{Example}
+\begin{verbatim}
+file_list <- read.files('.')
+files_content <- lapply(file_list, function(file) \{
+	data <- read.csv(file)
+	#Do something with the data
+	return(data)
+\})
+\end{verbatim}  
+  \end{exampleblock}
+\end{xframe}
+
+
+%%%%%%%
+\section{Conditions and loops}
+%%%%%%%
+\begin{xframe}{Conditions}
+  \begin{block}{Boolean}
+    \begin{description}
+    \item[{\it logical}] Binary data: {\it TRUE} or {\it FALSE}.
+    \item[Numeric comparison] {\sf ==}, {\sf !=}, {\sf $>$}, {\sf $<$}, {\sf $>=$}, {\sf $<=$}.
+    \item[Boolean operation] AND: \&, OR: $|$, NOT: !
+    \item[which] Returns the index of the vectors with {\it TRUE} values.
+    \item[any] Take a vector of {\it logical} and return {\it TRUE} if at least one value is {\it TRUE}.
+    \item[\%in\%] Vectorized any. See example/supp material.
+    \end{description}
+  \end{block}
+  \begin{exampleblock}{Example}
+\begin{verbatim}
+2 + 2 == 4
+(2 < 3) & (3 != 1+2)
+which(5:10 == 6)
+any(9>1:10)
+any(9>1:10 & 8<=1:10)
+luckyNumbers[which(luckyNumbers %in% c(16,42,-66.6))]
+\end{verbatim}  
+  \end{exampleblock}
+  \note{Is more details on logical rules necessary ?\\Question: write a function that filters out numbers: largerThan <- function(data, threshold) \{...\} }
+\end{xframe}
+
+%%%%%%%
+
+\begin{xframe}{Testing conditions}
+  \begin{block}{{\sf if else}}
+    Test if a condition, if {\it TRUE} run some instruction, if {\it FALSE} something else (or nothing).
+  \end{block}
+  \begin{exampleblock}{Example}
+\begin{verbatim}
+if(length(luckyNumbers)>3){
+  cat("Too many lucky numbers.\n")
+  luckyNumbers = luckyNumbers[1:3]
+} else if(length(luckyNumbers)==3){
+  cat("Just enough lucky numbers.\n")
+} else {
+  cat("You need more lucky numbers.\n")
+}
+\end{verbatim}  
+  \end{exampleblock}
+  \note{Maybe more theoretical structure\\Question: write a function that filter number higher than 10}
+\end{xframe}
+
+%%%%%%%
+
+\begin{xframe}{Loops}
+  \begin{block}{{\sf for} loops}
+    Iterate over the element of a container and run instructions.
+\begin{verbatim}
+for(v in vec){
+...  Instruction
+}
+\end{verbatim}  
+  \end{block}
+  \begin{block}{{\sf while} loops}
+    Run instructions as long as a condition is {\it TRUE}.
+\begin{verbatim}
+while( CONDITION ){
+...  Instruction
+}
+\end{verbatim}  
+  \end{block}
+  \note{Question:}
+\end{xframe}
+
+
+
+
+%%%%%%%
+\section{Import/export data}
+%%%%%%%
+
+\begin{frame}[shrink=5]{Import/export data}
+  \begin{block}{Easy but important}
+    \begin{itemize}
+    \item What data structure is the more appropriate ? {\sf vector}, {\sf matrix} ?
+    \item Does R read/write the file the way you want ?
+    \item The extra arguments of the functions are your allies.
+    \end{itemize}
+  \end{block}
+  \begin{block}{{\sf scan}}
+    To read a {\sf vector} from a file with, for example, one value per line.
+    \begin{description}
+    \item[file=] the file name.
+    \item[what=] the type of the argument gives the type of the values, e.g $1$, $''a''$.
+    \item[sep=] the character that separate each value. By default, a white-space or end of line.
+    \end{description}
+  \end{block}
+  \begin{block}{{\sf write}}
+    To write a {\sf vector} from a file with one value per line.
+    \begin{description}
+    \item[vec] the vector to write.
+    \item[file=] the file name.
+    \item[sep=] the character that separate each value.
+    \end{description}
+  \end{block}
+  \note{Questions: try to write on vector\\Then re-read it.}
+\end{frame}
+
+%%%%%%%
+
+\begin{frame}[shrink=10]{Import/export data}
+  \begin{block}{{\sf read.data}}
+    To read a {\sf data.frame} from a multi-column file.
+    \begin{description}
+    \item[file=] the file name.
+    \item[header=] {\it TRUE} use the first line for the column names. Default: {\it FALSE}.
+    \item[as.is=] {\it TRUE} read the values as simple type, no complex type inference, {\bf recommended}. Default: {\it FALSE}. 
+    \item[sep=] the character that separate each column. By default, a white-space or end of line.
+    \end{description}
+  \end{block}
+  \begin{block}{{\sf write.data}}
+    To write a {\sf data.frame} in a multi-column file.
+    \begin{description}
+    \item[df] the {\sf matrix} or {\sf data.frame} to write.
+    \item[file=] the file name.
+    \item[col.names=] {\it TRUE} print the column names in the first line. Default: {\it TRUE}.
+    \item[row.names=] {\it TRUE} print the rows names in the first columns. Default: {\it TRUE}.
+    \item[quote=] {\it TRUE} surround {\sf character} by quotes($''$). Default: {\it TRUE} $\rightarrow$ messy. 
+    \item[sep=] the character that separate each column. By default, a white-space.
+    \end{description}
+  \end{block}
+  \note{Questions: try to write a matrix with the different arguments\\Then re-read it.}
+\end{frame}
+
+%%%%%%%
+
+\begin{xframe}{Import/export data}
+  \begin{block}{R objects}
+    \begin{description}
+      \item[save] Save R objects into a file. Usual extension: {\it .RData}. {\sf file=} argument to specify file name.
+      \item[save.image] Save the entire R environment.
+      \item[load] Load R objects from a ({\it .RData}) file. {\sf verbose} to print the names of the objects loaded.
+    \end{description}
+  \end{block}
+  \begin{exampleblock}{Example}
+\begin{verbatim}
+save(luckyNumbers, tenOnes, mat, file="uselessData.RData")
+load(file="uselessData.RData")
+load(file="dataForBasicPlots.RData",verbose=TRUE)
+\end{verbatim}  
+  \end{exampleblock}
+  \note{Rstudio tips\\Questions: load data for next exercise.\\Save your objects if you want to...}
+\end{xframe}
+
+%%%%%%%
+\section{Basic plotting}
+%%%%%%%
+
+\begin{frame}{Basic plotting}
+  \begin{block}{}
+    \begin{description}
+      \item[hist] Plot the value distribution of a vector.
+      \item[plot] Plot one vector against the other.
+      \item[line] Same as plot but super-imposed to the existent one.
+      \item[abline] Draw vertical/horizontal lines.
+    \end{description}
+  \end{block}
+  \begin{block}{Common arguments}
+    \begin{description}
+      \item[main=] A title for the plot.
+      \item[xlim=/ylim] A vector of size two defining the desired limit on the x/y axis.
+      \item[xlab=/ylab=] A name for the x/y axis.
+    \end{description}
+  \end{block}
+  \note{Questions: plot the prepared data(some funny shaped plots ?)\\Histogram with vertical line on the mean}
+\end{frame}
+
+%%%%%%%
+
+%%%%%%%
+\section{Extra exercises}
+%%%%%%%
+
+\begin{frame}{Debugging}
+  \begin{block}{Instructions}
+    \begin{enumerate}
+    \item Open {\bf scriptToDebug.R} document.
+    \item Run and debug it !
+    \end{enumerate}
+  \end{block}
+  \note{Bugs: header load table, type read.table, parenthesis/brackets, infinite loop, NA in mean etc, operation different length, type coercion numeric character, non-unique (col)names, (global variable within function), apply rows returning matrix}
+\end{frame}
+
+\begin{frame}{One-liner quiz}
+  \begin{block}{Instructions}
+    Write R command to address each question. Only one-line command allowed. The shorter the better.
+  \end{block}
+  \begin{block}{Questions}
+    \begin{enumerate}
+    \item From a matrix of numeric, compute the proportion of columns with average value higher than 0.
+    \item From a matrix of numeric, print the name of the columns with the highest value.
+    \item From a matrix of numeric, print the rows with only positive values.
+    \item 
+    \end{enumerate}
+  \end{block}
+  \note{Find more questions.}
+\end{frame}
+
+%%%%%%%
+\section{Miscellaneous}
+%%%%%%%
+
+\begin{xframe}{Type coercion.}
+  \begin{block}{}
+    \begin{itemize}
+    \item Automatic conversion of an object to another type, e.g {\sf numeric}$\rightarrow${\sf character}, {\sf logical}$\rightarrow${\sf numeric}.
+    \item Awareness for debugging.
+    \item Useful sometimes.
+    \end{itemize}
+  \end{block}
+  \begin{exampleblock}{Example}
+\begin{verbatim}
+is.numeric( c(1:10,"eleven") )
+
+logical.vector = c(TRUE,TRUE,FALSE,TRUE,FALSE)
+sum(logical.vector)
+mean(logical.vector)
+\end{verbatim}  
+  \end{exampleblock}
+  \note{Questions: How would you do it }
+\end{xframe}
+
+\begin{xframe}{{\sf character} operations}
+  \begin{block}{}
+    \begin{description}
+      \item[paste] Paste several character into one.
+      \item[grep] Search a pattern in a vector and return the index when matched.
+      \item[grepl] Search a pattern in a vector and return {\it TRUE} if found.
+      \item[strsplit] Split character into several.
+    \end{description}
+  \end{block}
+  \begin{exampleblock}{Example}
+\begin{verbatim}
+sample.name = "Ob5cU8eN4mE"
+file.name = paste("pathToYourDirectory/greatAnalysis-",
+                                sample.name,".txt",sep="")
+
+which(sample.names=="controlA" & sample.names=="controlB")
+grep("control",sample.names)
+\end{verbatim}  
+  \end{exampleblock}
+  \note{More details}
+\end{xframe}
+
+\begin{xframe}{Valid object name}
+  \begin{block}{}
+    \begin{itemize}
+    \item {\bf Letters}, {\bf numbers}, {\bf dot} or {\bf underline} characters.
+    \item {\bf Starts with a letter} or the dot not followed by a number.
+    \item {\sf make.names} convert character into valid object names.
+    \end{itemize}
+  \end{block}
+  \begin{exampleblock}{Example}
+\begin{verbatim}
+make.names(c("valid name","valid_name","valid.name",
+             "valid-name","2.valid.name","x2.valid-name"))
+\end{verbatim}  
+  \end{exampleblock}
+  \note{Should it be present in the beginning ?}
+\end{xframe}
+
+
+
+\end{document}
