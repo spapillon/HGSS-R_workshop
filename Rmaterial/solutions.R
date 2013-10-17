@@ -1,9 +1,6 @@
 ## Get my favorite number
 n = c(3,12,458,-449826.67)
-n.new = n*6 + 21
-n.new = n.new/3 - 1
-n.new = n.new/2 - n
-n.new
+((n*6+21)/3-1)/2 -n
 
 ## Data structure exercice.
 mat = matrix(runif(100*4),100,4)
