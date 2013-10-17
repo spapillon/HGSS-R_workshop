@@ -339,40 +339,6 @@ l
 
 %%%%%%%
 
-
-%%%%%%%
-\section{Functions}
-%%%%%%%
-
-\begin{xframe}{Functions}
-  \begin{block}{}
-    \begin{itemize}
-    \item Name of the function with arguments between parenthesis.
-    \item E.g. {\sf mean(x)}.
-    \end{itemize}
-  \end{block}
-  \begin{block}{Do your own}
-    \begin{itemize}
-      \item[function] To define functions.
-      \item All the object created within the function are temporary.
-      \item[return] Define what will be returned by the function. 
-    \end{itemize}
-  \end{block}
-  \begin{exampleblock}{Example}
-\begin{verbatim}
-almostMean = function(x){
-  x.mean = mean(x)
-  return(x.mean+1)
-}
-almostMean(0:10)
-x.mean
-\end{verbatim}
-  \end{exampleblock}
-  \note{Question:create a function that returns the power: pow <- function(base, exp) ...\\}
-\end{xframe}
-
-%%%%%%%
-
 \begin{xframe}{Functions - {\sf apply}}
   \begin{block}{New best friend}
     \begin{itemize}
@@ -412,6 +378,40 @@ files_content <- lapply(file_list, function(file) \{
 \end{verbatim}  
   \end{exampleblock}
 \end{xframe}
+
+
+%%%%%%%
+\section{Functions}
+%%%%%%%
+
+\begin{xframe}{Functions}
+  \begin{block}{}
+    \begin{itemize}
+    \item Name of the function with arguments between parenthesis.
+    \item E.g. {\sf mean(x)}.
+    \end{itemize}
+  \end{block}
+  \begin{block}{Do your own}
+    \begin{itemize}
+      \item[function] To define functions.
+      \item All the object created within the function are temporary.
+      \item[return] Define what will be returned by the function. 
+    \end{itemize}
+  \end{block}
+  \begin{exampleblock}{Example}
+\begin{verbatim}
+almostMean = function(x){
+  x.mean = mean(x)
+  return(x.mean+1)
+}
+almostMean(0:10)
+x.mean
+\end{verbatim}
+  \end{exampleblock}
+  \note{Question:create a function that returns the power: pow <- function(base, exp) ...\\}
+\end{xframe}
+
+%%%%%%%
 
 
 %%%%%%%
