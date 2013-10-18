@@ -86,8 +86,42 @@ Exercises/data to prepare: \\nice/funny plots\\useful function\\debugging\\one-l
 
 %%%%%%%
 
-\begin{xframe}{Comparison to other languages}
-  Comparison with C ?
+\begin{xframe}{R vs other languages}
+\begin{block}{Let's create an array, shuffle it and find where is 5.}
+\end{block}
+  \begin{exampleblock}{In C\ldots} 
+  {\tiny  \begin{Verbatim}
+#include <stdlib.h>
+#include <time.h>   
+int main() {
+    int size = 10;
+    int *elements = malloc(sizeof(int)*size);
+    int i = 0;
+    srand(time(NULL));
+    for (i = 0; i < size; ++i)
+        elements[i] = i;
+    for (i = size - 1; i > 0; --i) {
+        int w = rand()%i;
+        int t = elements[i];
+        elements[i] = elements[w];
+        elements[w] = t;
+    }
+    for(i = 0; i < size; ++i) {
+        if(elements[i] == 5)
+            printf("%d\n", i);
+    }
+    free(elements);
+} 
+	\end{Verbatim}
+}
+  \end{exampleblock}
+  \begin{exampleblock}{In R\ldots}
+  {\tiny  \begin{Verbatim}
+  which(sample(0:9) == 5)
+  \end{Verbatim}
+  }
+  \end{exampleblock}
+
   \note{The shuffle array example is good}
 \end{xframe}
 
