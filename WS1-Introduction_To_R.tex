@@ -86,8 +86,42 @@ Exercises/data to prepare: \\nice/funny plots\\useful function\\debugging\\one-l
 
 %%%%%%%
 
-\begin{xframe}{Comparison to other languages}
-  Comparison with C ?
+\begin{xframe}{R vs other languages}
+\begin{block}{Let's create an array, shuffle it and find where is 5.}
+\end{block}
+  \begin{exampleblock}{In C\ldots} 
+  {\tiny  \begin{Verbatim}
+#include <stdlib.h>
+#include <time.h>   
+int main() {
+    int size = 10;
+    int *elements = malloc(sizeof(int)*size);
+    int i = 0;
+    srand(time(NULL));
+    for (i = 0; i < size; ++i)
+        elements[i] = i;
+    for (i = size - 1; i > 0; --i) {
+        int w = rand()%i;
+        int t = elements[i];
+        elements[i] = elements[w];
+        elements[w] = t;
+    }
+    for(i = 0; i < size; ++i) {
+        if(elements[i] == 5)
+            printf("%d\n", i);
+    }
+    free(elements);
+} 
+	\end{Verbatim}
+}
+  \end{exampleblock}
+  \begin{exampleblock}{In R\ldots}
+  {\tiny  \begin{Verbatim}
+  which(sample(0:9) == 5)
+  \end{Verbatim}
+  }
+  \end{exampleblock}
+
   \note{The shuffle array example is good}
 \end{xframe}
 
@@ -387,32 +421,6 @@ mat + mat
 
 %%%%%%%
 
-\begin{xframe}{Lists}
-  \begin{block}{Flexible container}
-    E.g. can concatenate a {\sf vector} of {\it numeric} with a {\sf matrix} of {\it numeric} and a {\sf matrix} of {\it character}.
-    \begin{description}
-      \item[list] Create a list.
-      \item[{l[[i]]} ] Get or set the $i^{th}$ object of the list.
-      \item[l\$toto] Get or set the element labeled as {\it toto}.
-      \item[names] Get or set the names of the list elements.
-      \item[length] Get the number of element in the list.
-      \item[str] Output the structure of a R object.
-    \end{description}
-  \end{block}
-  \begin{exampleblock}{Example}
-\begin{verbatim}
-l = list(vec=1:10,mat=matrix(runif(25),5))
-str(l)
-l
-l$vec = 1
-l
-\end{verbatim}
-  \end{exampleblock}
-  \note{Questions:\\Make a 3-dimensional (4x4x4) data type using a list}
-\end{xframe}
-
-%%%%%%%
-
 \begin{frame}{Exercise}
   \begin{enumerate}
   \item Create a matrix of with 100 rows and 4 columns with random numbers inside. {\scriptsize\it Tip: {\sf runif} function for random numbers.}
@@ -443,6 +451,34 @@ apply(mat,2,function(x){
 \end{verbatim}  
   \end{exampleblock}
   \note{Same for list, etc\\output}
+\end{xframe}
+
+%%%%%%%
+
+\begin{xframe}{Lists}
+  \begin{block}{Flexible container}
+    A list can contain any element type. It does not require elements to be of
+    the same type.
+    \begin{description}
+      \item[list] Create a list.
+      \item[{l[[i]]} ] Get or set the $i^{th}$ object of the list.
+      \item[l\$toto] Get or set the element labeled as {\it toto}.
+      \item[names] Get or set the names of the list elements.
+      \item[length] Get the number of element in the list.
+      \item[str] Output the structure of a R object.
+    \end{description}
+  \end{block}
+  \begin{exampleblock}{Example}
+\begin{verbatim}
+l = list(vec=1:10,mat=matrix(runif(25),5))
+str(l)
+l
+l$vec = 1
+l
+\end{verbatim}
+  \end{exampleblock}
+  \note{Questions:\\Make a phonebook: A list of 3 elements (vectors): names,
+  phone number and address}
 \end{xframe}
 
 %%%%%%%
