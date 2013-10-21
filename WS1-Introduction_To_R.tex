@@ -562,22 +562,22 @@ x.mean
 	
     \begin{description}
     \item[{\sf ==}] Are both values equal.
-    \item[{\sf \succ or \geq}] Is the left value greater (greater or equal)
+    \item[{\sf $>$ or $\geq$}] Is the left value greater (greater or equal)
     than the right value.
-	\item[{\sf \prec or \leq}] Is the left value smaller (smaller or equal) than
+	\item[{\sf $<$ or $\leq$}] Is the left value smaller (smaller or equal) than
 	the left value.
     \item[!] Is a NOT operator that negates the value of a test.
-    \item[\|] Is an OR operator used to combine logical tests. Returns TRUE if
+    \item[$|$] Is an OR operator used to combine logical tests. Returns TRUE if
     either are TRUE.
-    \item[\&\&] Is an AND operator used to combine logical tests. Returns TRUE
+    \item[\&] Is an AND operator used to combine logical tests. Returns TRUE
     if both are TRUE
     \end{description}
   \end{block}
   \begin{exampleblock}{Example}
 \begin{verbatim}
-test <- 2 + 2 == 4 (TRUE)
-test && !test (FALSE)
-test || !test (TRUE)
+test <- 2 + 2 == 4    ## (TRUE)
+test && !test         ## (FALSE)
+test || !test         ## (TRUE)
 \end{verbatim}  
   \end{exampleblock}
   \note{Is more details on logical rules necessary ?\\Question: write a function that :\\filters out numbers smaller than 3\\The same with the threshold  as a parameter: {\sf largerThan $<-$ function(data, threshold) \{...\}} }
@@ -589,7 +589,7 @@ test || !test (TRUE)
   \begin{block}{Boolean}
   Any logical tests can be vectorized (compare 2 vectors).
     \begin{description}
-       \item[\mid] Is a OR operator for vectorized application.
+       \item[$\mid$] Is a OR operator for vectorized application.
     \item[\&] Is an AND operator for vectorized application.
     \item[which] Returns the index of the vectors with {\it TRUE} values.
     \item[any] Take a vector of {\it logical} and return {\it TRUE} if at least one value is {\it TRUE}.
