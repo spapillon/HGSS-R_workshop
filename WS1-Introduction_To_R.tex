@@ -25,7 +25,7 @@
 \setbeamertemplate{blocks}[rounded][shadow=true]
 
 % Notes or not
-\setbeameroption{show notes}
+\setbeameroption{hide notes}
 %%\setbeamertemplate{note page}[plain]
 %%\pgfpagesuselayout{2 on 1}
 %%%%
@@ -427,7 +427,7 @@ mat + mat
 
 \begin{frame}{Exercise}
   \begin{enumerate}
-  \item Create a matrix of with 100 rows and 4 columns with random numbers inside. {\scriptsize\it Tip: {\sf runif} function for random numbers.}
+  \item Create a matrix with 100 rows and 4 columns with random numbers inside. {\scriptsize\it Tip: {\sf runif} function for random numbers.}
   \item Name the columns. E.g. {\it sampleA}, {\it sampleB}, ...
   \item Print the name of the column with the largest mean value.
   \item Print the name of the column with the largest value.
@@ -442,7 +442,7 @@ mat + mat
     \begin{itemize}
     \item Apply a function to row or columns of a 2 dimension data structure (matrix or data frame).
     \item No manual iteration, the loop is implicit.
-    \item Second argument: $1$ means rows, $2$ means columns.
+    \item Second parameter: $1$ means rows, $2$ means columns.
     \end{itemize}
   \end{block}
   \begin{exampleblock}{Example}
@@ -513,7 +513,7 @@ files_content <- lapply(file_list, function(file) \{
 \begin{xframe}{Functions}
   \begin{block}{}
     \begin{itemize}
-    \item Name of the function with arguments between parenthesis.
+    \item Name of the function with parameters between parenthesis.
     \item E.g. {\sf mean(x)}.
     \end{itemize}
   \end{block}
@@ -545,7 +545,7 @@ x.mean
   \item returns the average of the minimum and maximum value of a vector.
   \item returns the power of a number. 
     
-    Two arguments: {\sf base} and {\sf exponent}. 
+    Two parameters: {\sf base} and {\sf exponent}. 
     
     Returns: $base^{exponent}$.
     \medskip
@@ -565,22 +565,22 @@ x.mean
 	
     \begin{description}
     \item[{\sf ==}] Are both values equal.
-    \item[{\sf \succ or \geq}] Is the left value greater (greater or equal)
+    \item[{\sf $>$ or $\geq$}] Is the left value greater (greater or equal)
     than the right value.
-	\item[{\sf \prec or \leq}] Is the left value smaller (smaller or equal) than
+	\item[{\sf $<$ or $\leq$}] Is the left value smaller (smaller or equal) than
 	the left value.
     \item[!] Is a NOT operator that negates the value of a test.
-    \item[\|] Is an OR operator used to combine logical tests. Returns TRUE if
+    \item[$|$] Is an OR operator used to combine logical tests. Returns TRUE if
     either are TRUE.
-    \item[\&\&] Is an AND operator used to combine logical tests. Returns TRUE
+    \item[\&] Is an AND operator used to combine logical tests. Returns TRUE
     if both are TRUE
     \end{description}
   \end{block}
   \begin{exampleblock}{Example}
 \begin{verbatim}
-test <- 2 + 2 == 4 (TRUE)
-test && !test (FALSE)
-test || !test (TRUE)
+test <- 2 + 2 == 4    ## (TRUE)
+test && !test         ## (FALSE)
+test || !test         ## (TRUE)
 \end{verbatim}  
   \end{exampleblock}
   \note{Is more details on logical rules necessary ?\\Question: write a function that :\\filters out numbers smaller than 3\\The same with the threshold  as a parameter: {\sf largerThan $<-$ function(data, threshold) \{...\}} }
@@ -592,7 +592,7 @@ test || !test (TRUE)
   \begin{block}{Boolean}
   Any logical tests can be vectorized (compare 2 vectors).
     \begin{description}
-       \item[\mid] Is a OR operator for vectorized application.
+       \item[$\mid$] Is a OR operator for vectorized application.
     \item[\&] Is an AND operator for vectorized application.
     \item[which] Returns the index of the vectors with {\it TRUE} values.
     \item[any] Take a vector of {\it logical} and return {\it TRUE} if at least one value is {\it TRUE}.
@@ -709,7 +709,7 @@ for(n in 1:10){
 \begin{xframe}{Import/export data}
   \begin{block}{R objects}
     \begin{description}
-      \item[save] Save R objects into a file. Usual extension: {\it .RData}. {\sf file=} argument to specify file name.
+      \item[save] Save R objects into a file. Usual extension: {\it .RData}. {\sf file=} parameter to specify file name.
       \item[save.image] Save the entire R environment.
       \item[load] Load R objects from a ({\it .RData}) file. {\sf verbose} to print the names of the objects loaded.
     \end{description}
@@ -731,7 +731,7 @@ load(file="dataForBasicPlots.RData",verbose=TRUE)
     \begin{itemize}
     \item What data structure is the more appropriate ? {\sf vector}, {\sf matrix} ?
     \item Does R read/write the file the way you want ?
-    \item The extra arguments of the functions are your allies.
+    \item The extra parameters of the functions are your allies.
     \end{itemize}
   \end{block}
   \begin{block}{{\sf read.data}}
@@ -804,7 +804,7 @@ plot(mat.ge[,1],mat.ge[,2])
 %%%%%%%%%
 
 \begin{xframe}{Basic plotting}
-  \begin{block}{Common arguments}
+  \begin{block}{Common parameters}
     \begin{description}
     \item[main=] A title for the plot.
     \item[xlab=/ylab=] A name for the x/y axis.
