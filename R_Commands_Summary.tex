@@ -34,7 +34,7 @@
 %%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%
-\paragraph{R control} (source)
+\paragraph{R control}
 \begin{itemize} 
   \item Quit R; Load a library; Get help about a function. \\
     \verb!q(); library(theLibraryYouWant); help(plot); ?plot!
@@ -47,15 +47,15 @@
 %%%%
 \paragraph{Data import/export}
 \begin{itemize} 
-  \item Write/read a vector in a file. \\ 
-    \verb!write(vec,"file.txt",sep="\n")! \\
-    \verb!scan(file="file.txt",what="a"); scan(vec,file="file.txt",what=1)!
+  \item Save/load R objects. \\
+    \verb!save(study.res1, study,res2,file="file.RData")! \\
+    \verb!load("file.RData",verbose=TRUE)!
   \item Write/read a table in a file. \\ 
     \verb!write.table(t,file="file.txt",quote=FALSE,sep="\t",row.names=FALSE)! \\
     \verb!read.table("file.txt",as.is=TRUE,header=TRUE)! 
-  \item Save/load R objects. \\
-    \verb!save(study.res1, study,res2,file="file.RData")! \\
-    \verb!load("file.RData")!
+  \item Write/read a vector in a file. \\ 
+    \verb!write(vec,"file.txt",sep="\n")! \\
+    \verb!scan(file="file.txt",what="a"); scan(vec,file="file.txt",what=1)!
 \end{itemize}
 
 
@@ -109,30 +109,40 @@
   \verb!sum(vec); mean(mat); minimum(vec); maximum(mat)!
 \item Same with the median, variance, standard deviation.\\ 
   \verb!median(vec); var(vec); sd(vec) !
-\item Count the how many times values are repeated in a vector.\\ 
+\item Count how many times values are repeated in a vector.\\ 
   \verb!table(vec)!
-\item Correlation between two vector of the \uline{same length}.\\ 
-  \verb!cor(vec1,vec2)!
+\item Correlation between two vector of the \uline{same length}, or the columns of a matrix.\\ 
+  \verb!cor(vec1,vec2); cor(mat)!
 \end{itemize}
 
 
 %%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%
-\paragraph{Data manipulation} sort, rev, apply, lapply, (sample), subset
+\paragraph{Data manipulation}
 \begin{itemize} 
-  \item TODO \\ 
-    \verb!!
+  \item sort a vector in increasing or decreasing order \\ 
+    \verb!sort(vec); sort(vec, decreasing=TRUE)!
+  \item Reverse a vector; shuffle a vector. \\ 
+    \verb!rev(vec); sample(vec)!
+  \item Apply a function on a matrix row or columns; or on every element of a list. \\ 
+    \verb!apply(mat,1,mean); apply(mat,2,mean); lapply(l,mean)!
+  \item Subset the content of a data frame using conditions on its columns. \\ 
+    \verb!subset(df, oneToTen > 5)!
 \end{itemize}
 
 
 %%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%
-\paragraph{Boolean} ==, !=, ><=, \%in\%, any, which, sum
+\paragraph{Boolean} 
 \begin{itemize} 
-  \item TODO \\ 
-    \verb!!
+  \item {\it a} equal {\it b} ? different ? greater ? greater or equal ? \\ 
+    \verb?a==b; a!=b; a > b; a >= b?
+  \item Get the index satisfying a condition \\ 
+    \verb?which(Condition)?
+  \item Is there any {\it TRUE} values in the vector. \\ 
+    \verb?any(vec)?
 \end{itemize}
 
 
@@ -141,43 +151,58 @@
 %%%%
 \paragraph{Condition and loops} if, for, while
 \begin{itemize} 
-  \item TODO \\ 
-    \verb!!
+  \item Test conditions
+\begin{verbatim}
+if(Condition){
+   ...Instructions...
+} else if(Condition2){
+   ...Instructions2...
+} else {
+   ...Instructions3...
+}
+\end{verbatim}
+  \item Loop over the values of a vector.
+\begin{verbatim}
+for(v in vec){
+   ...Instructions...
+} 
+\end{verbatim}
+  \item Loop until a condition is satisfied.
+\begin{verbatim}
+while(Condition){
+   ...Instructions...
+}
+\end{verbatim}
 \end{itemize}
 
-
-%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%
-\paragraph{Strings} strsplit, gsub, paste, grep(l)
-\begin{itemize} 
-  \item TODO \\ 
-    \verb!!
-\end{itemize}
 
 %%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%
 \paragraph{Simple plotting} plot, hist, line, pdf, png, dev.off(
 \begin{itemize} 
-  \item TODO \\ 
-    \verb!!
+  \item Plot the distribution of a vector's values. \\ 
+    \verb!hist(vec,main="Your title",xlab="x-axis label")!
+  \item Plot one vector against another of the same length. \\ 
+    \verb!plot(vec1,vec2,main="Your title",xlab="x-axis label",ylab="y-axis label")!
+  \item Parameters for the style of the point or line, or the colour \\ 
+    \verb!plot(... , pch=2, lty=3, col=4)!
+  \item Superimpose horizontal/vertical lines to the existing plot. \\ 
+    \verb!abline(h=0,lty=2); abline(v=2,lty=2)!
+  \item Superimpose another plot to the existing plot. \\ 
+    \verb!lines(vec3,vec4,type="p")!
+  \item Open a connection to a pdf/png file; close it.
+\begin{verbatim}
+pdf("myPlot.pdf"); png("myPlot.png")
+plot(...)
+dev.off()
+\end{verbatim}
 \end{itemize}
 
-%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%
-\paragraph{Statistical tests and regression}  t.test, wilcox.test, chisq.test, lm
+\paragraph{Appendix}
 \begin{itemize} 
-  \item TODO \\ 
-    \verb!!
-\end{itemize}
-
-
-\paragraph{Appendix} Valid names in R, tabulationand line character code
-\begin{itemize} 
-  \item TODO \\ 
-    \verb!!
+  \item Tabulation and End Of Line character \\ 
+    \verb!"\t"; "\n"!
 \end{itemize}
 
 \end{document}

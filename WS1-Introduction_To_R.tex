@@ -201,10 +201,10 @@ int main() {
 %%% VECTORS
 %%%%%%%%%%%%%%%%%%%%
 \begin{xframe}{Vectors}
-  \begin{block}{Vector construction}
+  \begin{block}{{\sf vector} construction}
     \begin{description}
     \item[c] Concatenate function.
-    \item[1:10] Vector with numbers from 1 to 10.
+    \item[1:10] {\sf vector} with numbers from 1 to 10.
     \item[rep] Repeat element several times.
     \end{description}
   \end{block}
@@ -227,13 +227,13 @@ samples
   \begin{block}{Manipulation}
     Using an index between {\bf [ ]}.
     \begin{description}
-    \item[{vec[i:j]} ]Get or set a vector from $i^{th}$ to $j^{th}$ values.
+    \item[{vec[i:j]} ]Get or set a {\sf vector} from $i^{th}$ to $j^{th}$ values.
     \end{description}
   \end{block}
   \begin{block}{Characterization}
     \begin{description}
-    \item[length] Number of element in the vector.
-    \item[names] Get or set the names of the vector's values.
+    \item[length] Number of element in the {\sf vector}.
+    \item[names] Get or set the names of the {\sf vector}'s values.
     \end{description}
   \end{block}
   \begin{exampleblock}{Example}
@@ -258,10 +258,10 @@ luckyNumbers["philip"]
 \begin{xframe}[shrink=5]{Vectors}
   \begin{block}{Manipulation}
     \begin{description}
-    \item[sort] Sort a vector.
+    \item[sort] Sort a {\sf vector}.
     \item[order] Get the index of the sorted elements.
-    \item[rev] Reverse a vector.
-    \item[sample] Shuffle a vector.
+    \item[rev] Reverse a {\sf vector}.
+    \item[sample] Shuffle a {\sf vector}.
     \end{description}
   \end{block}
   \begin{exampleblock}{Example}
@@ -286,10 +286,10 @@ sample(1:10)
     \begin{description}
     \item[head/tail] Print the first/last values.
       \medskip
-    \item[{\bf\small On numeric vectors:}]
+    \item[{\bf\small On {\it numeric} {\sf vector}s:}]
     \item[summary] Summary statistics: minimum, mean, maximum, ...
     \item[min/max/mean/var] Minimum, maximum, average, variance.
-    \item[sum] Sum of the vector's values.
+    \item[sum] Sum of the {\sf vector}'s values.
     \end{description}
   \end{block}
   \begin{exampleblock}{Example}
@@ -308,16 +308,17 @@ min(luckyNumbers)
 \begin{xframe}{Vectors}
   \begin{block}{Arithmetic operators}
     \begin{itemize}
-    \item Simple arithmetic operations over all the values of the vector.
-    \item Or values by values when using vectors of same length.
+    \item Simple arithmetic operations over all the values of the {\sf vector}.
+    \item Or values by values when using {\sf vector}s of same length.
     \item Arithmetic operation: +, -, *, /, ** \(or \wedge\).
     \item Others exist but let's forget about them for a while.
     \end{itemize}
   \end{block}
 \begin{exampleblock}{Example}
 \begin{verbatim}
-luckyNumbers * 4 - 2
-luckyNumber s* 1:length(luckyNumbers) - 
+luckyNumbers * 4 - 
+luckyNumbers - luckyNumbers
+luckyNumbers * 1:length(luckyNumbers) - 
                           rev(1:length(luckyNumbers))
 luckyNumbers ** 2
 \end{verbatim}
@@ -330,7 +331,7 @@ luckyNumbers ** 2
 \begin{frame}{Exercise - Guess my favorite number}
   \begin{block}{Instructions}
     \begin{enumerate}
-    \item Create a vector with 6 {\it numeric} values
+    \item Create a {\sf vector} with 6 {\it numeric} values
     \item Multiply it by $6$.
     \item Add $21$.
     \item Divide it by $3$ 
@@ -350,7 +351,7 @@ luckyNumbers ** 2
 \begin{xframe}{Matrix}
   \begin{block}{Specific to matrices}
     \begin{description}
-    \item[matrix] Create a matrix from a vector. \\$2^{nd}$ and $3^{rd}$ parameters define the number of rows and columns.
+    \item[matrix] Create a {\sf matrix} from a {\sf vector}. \\$2^{nd}$ and $3^{rd}$ parameters define the number of rows and columns.
     \item[{mat[i:j,k:l]} ] Subset from the $i$ to $j$ row and $k$ to $l$ column.
     \end{description}    
   \end{block}
@@ -378,8 +379,8 @@ neo[1:2,1:3] = matrix(rep(1,6),2,3)
 \begin{xframe}{Matrix}
   \begin{block}{Specific to matrices}
     \begin{description}
-    \item[rbind/cbind] Concatenate vectors or matrix by row or column.
-    \item[dim] Dimension of the matrix: number of rows and columns.
+    \item[rbind/cbind] Concatenate {\sf vector}s or {\sf matrix} by row or column.
+    \item[dim] Dimension of the {\sf matrix}: number of rows and columns.
     \item[rownames/colnames] Get or set the names of the rows/columns.
     \end{description}    
   \end{block}
@@ -405,7 +406,7 @@ neo
   \begin{block}{Same as {\sf vector}}
     \begin{itemize}
     \item {\sf length}, {\sf head}, {\sf tail}.
-    \item For numeric matrix: {\sf min}, {\sf max}, {\sf sum}, {\sf mean}.
+    \item For {\it numeric} {\sf matrix}: {\sf min}, {\sf max}, {\sf sum}, {\sf mean}.
     \item Arithmetic operations: +, -, *, /.
     \end{itemize}
   \end{block}
@@ -427,7 +428,7 @@ mat + mat
 
 \begin{frame}{Exercise}
   \begin{enumerate}
-  \item Create a matrix with 100 rows and 4 columns with random numbers inside. {\scriptsize\it Tip: {\sf runif} function for random numbers.}
+  \item Create a {\sf matrix} with 100 rows and 4 columns with random numbers inside. {\scriptsize\it Tip: {\sf runif} function for random numbers.}
   \item Name the columns. E.g. {\it sampleA}, {\it sampleB}, ...
   \item Print the name of the column with the largest mean value.
   \item Print the name of the column with the largest value.
@@ -440,7 +441,7 @@ mat + mat
 \begin{xframe}{Functions - {\sf apply}}
   \begin{block}{New best friend}
     \begin{itemize}
-    \item Apply a function to row or columns of a 2 dimension data structure (matrix or data frame).
+    \item Apply a function to row or columns of a 2 dimension data structure ({\sf matrix} or data frame).
     \item No manual iteration, the loop is implicit.
     \item Second parameter: $1$ means rows, $2$ means columns.
     \end{itemize}
@@ -461,14 +462,14 @@ apply(mat,2,function(x){
 
 \begin{xframe}{Lists}
   \begin{block}{Flexible container}
-    A list can contain any element type. It does not require elements to be of
+    A {\sf list} can contain any element type. It does not require elements to be of
     the same type.
     \begin{description}
-      \item[list] Create a list.
-      \item[{l[[i]]} ] Get or set the $i^{th}$ object of the list.
+      \item[list] Create a {\sf list}.
+      \item[{l[[i]]} ] Get or set the $i^{th}$ object of the {\sf list}.
       \item[l\$toto] Get or set the element labeled as {\it toto}.
-      \item[names] Get or set the names of the list elements.
-      \item[length] Get the number of element in the list.
+      \item[names] Get or set the names of the {\sf list} elements.
+      \item[length] Get the number of element in the {\sf list}.
       \item[str] Output the structure of a R object.
     \end{description}
   \end{block}
@@ -488,14 +489,14 @@ l
 %%%%%%%
 
 \begin{xframe}{Functions - {\sf lapply}}
-  \begin{block}{apply for lists}
+  \begin{block}{apply for {\sf list}s}
     \begin{itemize}
-    \item Useful way to iterate through lists.
+    \item Useful way to iterate through {\sf list}s.
     \end{itemize}
   \end{block}
   \begin{exampleblock}{Example}
 \begin{verbatim}
-file_list <- read.files('.')
+file_list <- list.files('.')
 files_content <- lapply(file_list, function(file) \{
 	data <- read.csv(file)
 	#Do something with the data
@@ -542,7 +543,7 @@ x.mean
 \begin{frame}{Functions - Exercise}
   Create a function that: 
   \begin{enumerate}
-  \item returns the average of the minimum and maximum value of a vector.
+  \item returns the average of the minimum and maximum value of a {\sf vector}.
   \item returns the power of a number. 
     
     Two parameters: {\sf base} and {\sf exponent}. 
@@ -590,12 +591,12 @@ test || !test         ## (TRUE)
 
 \begin{xframe}{Conditions}
   \begin{block}{Boolean}
-  Any logical tests can be vectorized (compare 2 vectors).
+  Any logical tests can be vectorized (compare 2 {\sf vector}s).
     \begin{description}
        \item[$\mid$] Is a OR operator for vectorized application.
     \item[\&] Is an AND operator for vectorized application.
-    \item[which] Returns the index of the vectors with {\it TRUE} values.
-    \item[any] Take a vector of {\it logical} and return {\it TRUE} if at least one value is {\it TRUE}.
+    \item[which] Returns the index of the {\sf vector}s with {\it TRUE} values.
+    \item[any] Take a {\sf vector} of {\it logical} and return {\it TRUE} if at least one value is {\it TRUE}.
     \item[\%in\%] Vectorized any. See example/supp material.
     \end{description}
   \end{block}
@@ -615,8 +616,8 @@ luckyNumbers[which(luckyNumbers %in% c(16,42,-66.6))]
 \begin{frame}{Conditions - Exercise}
   Create a function that: 
   \begin{enumerate}
-  \item remove values below $3$ from a vector.
-  \item  remove values below a specified threshold from a vector.
+  \item remove values below $3$ from a {\sf vector}.
+  \item  remove values below a specified threshold from a {\sf vector}.
   \end{enumerate}
 \end{frame}
 
@@ -628,8 +629,8 @@ luckyNumbers[which(luckyNumbers %in% c(16,42,-66.6))]
   \begin{block}{{\sf if else}}
     Test if a condition, if {\it TRUE} run some instruction, if {\it FALSE} something else (or nothing).
 \begin{verbatim}
-if( CONDITION ){
-  INSTRUCTIONS
+if( Condition ){
+...   Instructions
 } 
 \end{verbatim}  
   \end{block}
@@ -651,7 +652,7 @@ if(length(luckyNumbers)>3){
 %%%%%%%%%
 
 \begin{frame}{{\sf if else} - Exercise}
-  Create a function that classify the average value of a vector. It returns:
+  Create a function that classify the average value of a {\sf vector}. It returns:
   \begin{itemize}
   \item {\it low} if the average if below $3$.
   \item {\it medium} if the average if between $3$ and $7$.
@@ -740,7 +741,7 @@ load(file="dataForBasicPlots.RData",verbose=TRUE)
     \item[file=] the file name.
     \item[header=] {\it TRUE} use the first line for the column names. Default: {\it FALSE}.
     \item[as.is=] {\it TRUE} read the values as simple type, no complex type inference, {\bf recommended}. Default: {\it FALSE}. 
-    \item[sep=] the character that separate each column. By default, a white-space or end of line.
+    \item[sep=] the {\it character} that separate each column. By default, a white-space or end of line.
     \end{description}
   \end{block}
   \begin{exampleblock}{Example}
@@ -762,7 +763,7 @@ input.data = read.table("fileToRead.txt", as.is=TRUE,
     \item[col.names=] {\it TRUE} print the column names in the first line. Default: {\it TRUE}.
     \item[row.names=] {\it TRUE} print the rows names in the first columns. Default: {\it TRUE}.
     \item[quote=] {\it TRUE} surround {\sf character} by quotes($''$). Default: {\it TRUE} $\rightarrow$ messy. 
-    \item[sep=] the character that separate each column. By default, a white-space.
+    \item[sep=] the {\it character} that separate each column. By default, a white-space.
     \end{description}
   \end{block}
   \begin{exampleblock}{Example}
@@ -780,16 +781,16 @@ write.table(resToWrite, file="fileToRead.txt", col.names=TRUE,
 
 \begin{xframe}{Basic plotting}
   \begin{block}{{\sf hist}}
-    Plot the value distribution of a vector.
+    Plot the value distribution of a {\sf vector}.
     \begin{description}
-    \item[x] The vector with the values to plot.
+    \item[x] The {\sf vector} with the values to plot.
     \end{description}
   \end{block}
   \begin{block}{{\sf plot}}
-    Plot one vector against the other.
+    Plot one {\sf vector} against the other.
     \begin{description}
-      \item[x] The first vector to plot. {\it x-axis}. 
-      \item[y] The second vector to plot. {\it y-axis}. 
+      \item[x] The first {\sf vector} to plot. {\it x-axis}. 
+      \item[y] The second {\sf vector} to plot. {\it y-axis}. 
       \item[type] How the points are plotted. ``p'' as points, ``l'' joined by lines.
     \end{description}
   \end{block}
@@ -808,7 +809,7 @@ plot(mat.ge[,1],mat.ge[,2])
     \begin{description}
     \item[main=] A title for the plot.
     \item[xlab=/ylab=] A name for the x/y axis.
-    \item[xlim=/ylim] A vector of size two defining the desired limit on the x/y axis.
+    \item[xlim=/ylim] A {\sf vector} of size two defining the desired limit on the x/y axis.
     \end{description}
   \end{block}
   \begin{exampleblock}{Example}
@@ -856,7 +857,7 @@ abline(h=0,lty=2)
   \begin{block}{{\sf boxplot}}
     Plot the distribution (quantiles/median/outliers) of variables.
     \begin{description}
-    \item[x] The matrix (or list) of distributions
+    \item[x] The {\sf matrix} (or {\sf list}) of distributions
     \end{description}
   \end{block}
   \begin{exampleblock}{Example}
@@ -869,36 +870,6 @@ boxplot(mat.ge)
 %%%%%%%%%
 
 
-%%%%%%%
-\section{Extra exercises}
-%%%%%%%
-
-\begin{frame}{Debugging}
-  \begin{block}{Instructions}
-    \begin{enumerate}
-    \item Open {\bf scriptToDebug.R} document.
-    \item Run and debug it !
-    \end{enumerate}
-  \end{block}
-  \note{Bugs: header load table, type read.table, parenthesis/brackets, infinite loop, NA in mean etc, operation different length, type coercion numeric character, non-unique (col)names, (global variable within function), apply rows returning matrix}
-\end{frame}
-
-%%%%%%%%%
-
-\begin{frame}{One-liner quiz}
-  \begin{block}{Instructions}
-    Write R command to address each question. Only one-line command allowed. The shorter the better.
-  \end{block}
-  \begin{block}{Questions}
-    \begin{enumerate}
-    \item From a matrix of numeric, compute the proportion of columns with average value higher than 0.
-    \item From a matrix of numeric, print the name of the columns with the highest value.
-    \item From a matrix of numeric, print the rows with only positive values.
-    \item 
-    \end{enumerate}
-  \end{block}
-  \note{Find more questions.}
-\end{frame}
 
 %%%%%%%
 \section{Miscellaneous}
@@ -929,10 +900,10 @@ mean(logical.vector)
 \begin{xframe}{{\sf character} operations}
   \begin{block}{}
     \begin{description}
-      \item[paste] Paste several character into one.
-      \item[grep] Search a pattern in a vector and return the index when matched.
-      \item[grepl] Search a pattern in a vector and return {\it TRUE} if found.
-      \item[strsplit] Split character into several.
+      \item[paste] Paste several {\it character} into one.
+      \item[grep] Search a pattern in a {\sf vector} and return the index when matched.
+      \item[grepl] Search a pattern in a {\sf vector} and return {\it TRUE} if found.
+      \item[strsplit] Split {\it character} into several.
     \end{description}
   \end{block}
   \begin{exampleblock}{Example}
@@ -968,4 +939,49 @@ dev.off()
   \end{exampleblock}
 \end{xframe}
 
+%%%%%%%
+\section{Extra exercise}
+%%%%%%%
+
+\begin{frame}{One-liner quiz}
+  \begin{block}{Instructions}
+    Write R command to address each question. Only one-line command allowed. The shorter the better.
+  \end{block}
+  \begin{block}{Questions}
+    \begin{enumerate}
+    \item From a {\sf matrix} of {\it numeric}, compute the proportion of columns with average value higher than 0.
+    \item From a {\sf matrix} of {\it numeric}, print the name of the columns with the highest value.
+    \item From a {\sf matrix} of {\it numeric}, print the rows with only positive values.
+    \item 
+    \end{enumerate}
+  \end{block}
+  \note{Find more questions.}
+\end{frame}
+
+
+
+\begin{frame}{Thank you !!}
+  \centering
+  If you're interested in potentially {\bf more sessions}, in different format ({\bf more often, more specific}), maybe some kind of {\bf R club}, let us know through the {\bf survey} or by email.
+
+  \bigskip
+  \bigskip
+
+  \uline{\href{mailto:jean.monlong@mail.mcgill.ca}{jean.monlong@mail.mcgill.ca}}
+\end{frame}
+
+
 \end{document}
+
+\begin{frame}{Debugging}
+  \begin{block}{Instructions}
+    \begin{enumerate}
+    \item Open {\bf scriptToDebug.R} document.
+    \item Run and debug it !
+    \end{enumerate}
+  \end{block}
+  \note{Bugs: header load table, type read.table, parenthesis/brackets, infinite loop, NA in mean etc, operation different length, type coercion {\it numeric} character, non-unique (col)names, (global variable within function), apply rows returning matrix}
+\end{frame}
+
+%%%%%%%%%
+
