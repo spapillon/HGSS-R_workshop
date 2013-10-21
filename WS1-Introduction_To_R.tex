@@ -306,11 +306,12 @@ min(luckyNumbers)
 %%%%%%%
 
 \begin{xframe}{Vectors}
-  \begin{block}{Operations}
+  \begin{block}{Arithmetic operators}
     \begin{itemize}
     \item Simple arithmetic operations over all the values of the vector.
-    \item  Or values by values when using vectors of same length.
-    \item Arithmetic operation: +, -, *, /.
+    \item Or values by values when using vectors of same length.
+    \item Arithmetic operation: +, -, *, /, ** \(or \wedge\).
+    \item Others exist but let's forget about them for a while.
     \end{itemize}
   \end{block}
 \begin{exampleblock}{Example}
@@ -318,6 +319,7 @@ min(luckyNumbers)
 luckyNumbers * 4 - 2
 luckyNumber s* 1:length(luckyNumbers) - 
                           rev(1:length(luckyNumbers))
+luckyNumbers ** 2
 \end{verbatim}
   \end{exampleblock}
   \note{Let's apply it to the Exercise}
