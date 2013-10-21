@@ -52,9 +52,7 @@
 
   \note{Welcome blabla, \\ 
 Who's a complete beginner ? \\ 
-Give me a R, give me a ... well that's it\\ 
-Potential addition: matrix fill up scheme, Rstudio use guide/slide, Tips box, Question box\\
-Exercises/data to prepare: \\nice/funny plots\\useful function\\debugging\\one-liner quiz.}
+Give me a R, give me a ... well that's it}
 \end{frame}
 
 %%%%
@@ -122,7 +120,6 @@ int main() {
   }
   \end{exampleblock}
 
-  \note{The shuffle array example is good}
 \end{xframe}
 
 %%%%%%%
@@ -139,7 +136,6 @@ int main() {
   \bigskip
   \includegraphics[page=1,height=.3\textheight]{imgs/Rstudio.png}
 
-  \note{Emacs+ESS on Linux, R console on Mac}
 \end{frame}
 
 
@@ -340,8 +336,6 @@ luckyNumbers ** 2
     \item Substract its original values.
     \end{enumerate}
   \end{block}
-
-  \note{}
 \end{frame}
 
 
@@ -584,7 +578,6 @@ test && !test         ## (FALSE)
 test || !test         ## (TRUE)
 \end{verbatim}  
   \end{exampleblock}
-  \note{Is more details on logical rules necessary ?\\Question: write a function that :\\filters out numbers smaller than 3\\The same with the threshold  as a parameter: {\sf largerThan $<-$ function(data, threshold) \{...\}} }
 \end{xframe}
 
 %%%%%%%%%%%
@@ -609,7 +602,7 @@ any(9>1:10 & 8<=1:10)
 luckyNumbers[which(luckyNumbers %in% c(16,42,-66.6))]
 \end{verbatim}  
   \end{exampleblock}
-  \note{Is more details on logical rules necessary ?\\Question: write a function that :\\filters out numbers smaller than 3\\The same with the threshold  as a parameter: {\sf largerThan $<-$ function(data, threshold) \{...\}} }
+  \note{Question: write a function that :\\filters out numbers smaller than 3\\The same with the threshold  as a parameter: {\sf largerThan $<-$ function(data, threshold) \{...\}} }
 \end{xframe}
 %%%%%%%%%
 
@@ -722,7 +715,7 @@ load(file="uselessData.RData")
 load(file="dataForBasicPlots.RData",verbose=TRUE)
 \end{verbatim}  
   \end{exampleblock}
-  \note{Rstudio tips\\Questions: load data for next exercise.\\Save your objects if you want to...}
+  \note{Questions: load data for next exercise.\\Save your objects if you want to...}
 \end{xframe}
 
 %%%%%%%
@@ -869,6 +862,17 @@ boxplot(mat.ge)
 
 %%%%%%%%%
 
+%%%%%%%%%
+
+\begin{frame}{Basic plotting - Exercise}
+  Plot:
+  \begin{enumerate}
+  \item the distribution of the average gene(row) expression. Add a vertical dotted line to mark their average value.
+  \item the expression(row) of {\it gene333} against {\it gene666}. Superimpose in red triangles the expression(row) of {\it gene333} against {\it gene667}.
+  \item the distribution of the first 10 samples(column) as a box plot.
+  \end{enumerate}
+\end{frame}
+
 
 
 %%%%%%%
@@ -916,7 +920,6 @@ which(sample.names=="controlA" & sample.names=="controlB")
 grep("control",sample.names)
 \end{verbatim}  
   \end{exampleblock}
-  \note{More details}
 \end{xframe}
 
 %%%%%%%%%

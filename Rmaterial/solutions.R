@@ -90,7 +90,7 @@ abline(v=mean(ge.mean),lty=2)
 plot(mat.ge["gene333",],mat.ge["gene666",],xlab="gene333",ylab="gene666",main="Correlated genes")
 lines(mat.ge["gene333",],mat.ge["gene667",],type="p",col=2,pch=2)
 
-cor.ge = cor(t(mat.ge))
+boxplot(mat.ge[,1:10],xlab="sample",ylab="expression",main="Box plot example")
 
 ## One-liner quizz
 mean(apply(mat,2,mean)>0)
