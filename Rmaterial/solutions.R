@@ -64,15 +64,24 @@ classify(1:20)
 meanCols.apply <- function(mat){
     return(apply(mat,2,mean))
 }
-meanCols.loop <- function(mat){
+meanCols.for <- function(mat){
     res = rep(NA,ncol(mat))
     for(i in 1:ncol(mat)){
         res[i] = mean(mat[,i])
     }
     return(res)
 }
+meanCols.while <- function(mat){
+    res = rep(NA,ncol(mat))
+    i = 1
+    while(i <= ncol(mat)){
+        res[i] = mean(mat[,i])
+    }
+    return(res)
+}
 meanCols.apply(matrix(1:12,3,4))
-meanCols.loop(matrix(1:12,3,4))
+meanCols.for(matrix(1:12,3,4))
+meanCols.while(matrix(1:12,3,4))
 
 ## Plots
 hist(apply(mat.ge,1,mean),xlab="gene expression",ylab="number of genes",main="Average gene expression across the samples")
