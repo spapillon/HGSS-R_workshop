@@ -97,6 +97,8 @@ neo["sample2","gene3"]
 neo["sample2","gene3"] = 33
 neo[c("sample1","sample3"),c("gene2","gene4")]
 neo[c("sample1","sample3"),c("gene2","gene4")] = matrix(82:85,2,2)
+neo = rbind(neo,c(3,54,2,12))
+rownames(neo)[4] = "sample4"
 
 ## Some functions
 head(neo)
@@ -108,87 +110,72 @@ neo - neo
 neo + neo
 
 ## Data structure exercice.
-mat = matrix(runif(100*4),100,4)
-colnames(mat) = c("sampleA","sampleB","sampleC","sampleD")
-head(mat)
-mean(mat[,1])
-mean(mat[,2])
-mean(mat[,3])
-mean(mat[,4])
-colnames(mat)[3] ## If the highest mean was found for mat[,3]
-max(mat[,1])
-max(mat[,2])
-max(mat[,3])
-max(mat[,4])
-colnames(mat)[1] ## If the highest max was found for mat[,1]
+matExample = matrix(runif(100*4),100,4)
+colnames(matExample) = c("sampleA","sampleB","sampleC","sampleD")
+head(matExample)
+mean(matExample[,1])
+mean(matExample[,2])
+mean(matExample[,3])
+mean(matExample[,4])
+colnames(matExample)[3] ## If the highest mean was found for matExample[,3]
+max(matExample[,1])
+max(matExample[,2])
+max(matExample[,3])
+max(matExample[,4])
+colnames(matExample)[1] ## If the highest max was found for matExample[,1]
+
+## Apply
+apply(matExample,2,mean)
+apply(matExample,1,min)
+summary(apply(matExample,1,min))
 
 ## Functions
-power <- function(a,b){
-    return(exp(b*log(a)))
+almostMean = function(x){
+x.mean = mean(x)
+return(x.mean+1)
 }
-power(2,2)
-power(2,6)
-
-minMaxAve <- function(v){
-    return(mean(c(min(v),max(v))))
+almostMean(0:10)
+x.mean  ## This variable doesn't exist outside of the function -> Error
+## Exercice
+minMaxAve <- function(input.vector){
+    return(mean(c(min(input.vector),max(input.vector))))
 }
 minMaxAve(0:10)
 minMaxAve(c(1,20:30))
+power <- function(base,exponent){
+    return(exp(exponent*log(base)))
+}
+power(2,2)
+power(2,10)
+2^10
 
-## Function with condition
-rem3 <- function(v){
-    return(v[which(v>3)])
-}
-rem3(1:10)
-rem3(4:10)
-rem3(1:3)
-
-remTh <- function(v,th=3){
-    return(v[which(v>th)])
-}
-remTh(1:10,3)
-remTh(1:10,9)
-
-## Function with condition and if/else
-classify <- function(v,low.th=3,high.th=7){
-    v.med = median(v)
-    if(v.med < low.th){
-        return("small")
-    } else if(v.med > high.th){
-        return("high")
-    } else {
-        return("medium")
-    }
-}
-classify(1:3)
-classify(1:10)
-classify(7:10)
-classify(1:20)
-
-## Function: apply vs loop
-meanCols.apply <- function(mat){
-    return(apply(mat,2,mean))
-}
-meanCols.for <- function(mat){
-    res = rep(NA,ncol(mat))
-    for(i in 1:ncol(mat)){
-        res[i] = mean(mat[,i])
-    }
-    return(res)
-}
-meanCols.while <- function(mat){
-    res = rep(NA,ncol(mat))
-    i = 1
-    while(i <= ncol(mat)){
-        res[i] = mean(mat[,i])
-    }
-    return(res)
-}
-meanCols.apply(matrix(1:12,3,4))
-meanCols.for(matrix(1:12,3,4))
-meanCols.while(matrix(1:12,3,4))
+## Import/Export data
+## In R format
+save(neo, matExample, file="someStuff.RData")
+save.image(file="allTheStuff.RData")
+load("someStuff.RData")
+print(load("someStuff.RData"))  ## Load and print what was loaded !
+load("allTheStuff.RData")
+ls()
+## In text format
+write.table(matrixToWrite,file="textFile.txt", col.names=TRUE,row.names=FALSE, quote=FALSE, sep="\t")
+input.data = read.table(file="textFile.txt", as.is=TRUE, header=TRUE, sep="\t")
 
 ## Plots
+print(load(file="dataForBasicPlots.RData")) ## Load the data...
+hist(mat.ge[,1])
+plot(mat.ge[,1],mat.ge[,2])
+
+par(mfrow=c(1,2)) ## To print different plots in the same windows
+hist(mat.ge[,1])
+plot(mat.ge[,1],mat.ge[,2])
+dev.off() ## close the window
+
+hist(mat.ge[,1])
+x11() ## To open a new window for a second plot
+plot(mat.ge[,1],mat.ge[,2])
+
+## Plot exercise
 hist(apply(mat.ge,1,mean),xlab="gene expression",ylab="number of genes",main="Average gene expression across the samples")
 abline(v=mean(ge.mean),lty=2)
 
@@ -196,8 +183,3 @@ plot(mat.ge["gene333",],mat.ge["gene666",],xlab="gene333",ylab="gene666",main="C
 lines(mat.ge["gene333",],mat.ge["gene667",],type="p",col=2,pch=2)
 
 boxplot(mat.ge[,1:10],xlab="sample",ylab="expression",main="Box plot example")
-
-## One-liner quizz
-mean(apply(mat,2,mean)>0)
-colnames(mat)[which.max(apply(mat,2,max))]
-mat[which(apply(mat,1,function(r)!any(r<0))),]

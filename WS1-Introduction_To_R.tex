@@ -1,4 +1,4 @@
-%% Notes or not
+% Notes or not
 %%\documentclass[10pt,t,handout]{beamer}
 %%%%
 \documentclass[10pt]{beamer}
@@ -312,10 +312,9 @@ min(luckyNumbers)
   \end{block}
 \begin{exampleblock}{Example}
 \begin{verbatim}
-luckyNumbers * 4 - 
+luckyNumbers * 4
 luckyNumbers - luckyNumbers
-luckyNumbers * 1:length(luckyNumbers) - 
-                          rev(1:length(luckyNumbers))
+luckyNumbers * 1:length(luckyNumbers)
 luckyNumbers ** 2
 \end{verbatim}
   \end{exampleblock}
@@ -728,7 +727,7 @@ load(file="dataForBasicPlots.RData",verbose=TRUE)
     \item The extra parameters of the functions are your allies.
     \end{itemize}
   \end{block}
-  \begin{block}{{\sf read.data}}
+  \begin{block}{{\sf read.table}}
     To read a {\sf data.frame} from a multi-column file.
     \begin{description}
     \item[file=] the file name.
@@ -748,7 +747,7 @@ input.data = read.table("fileToRead.txt", as.is=TRUE,
 %%%%%%%
 
 \begin{xframe}[shrink=10]{Import/export data - Text files}
-  \begin{block}{{\sf write.data}}
+  \begin{block}{{\sf write.table}}
     To write a {\sf data.frame} in a multi-column file.
     \begin{description}
     \item[df] the {\sf matrix} or {\sf data.frame} to write.
