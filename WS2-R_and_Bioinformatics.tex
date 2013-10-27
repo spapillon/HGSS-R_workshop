@@ -1,0 +1,604 @@
+% Notes or not
+%%\documentclass[10pt,t,handout]{beamer}
+%%%%
+\documentclass[10pt]{beamer}
+%%
+\usepackage{pgfpages}
+\usepackage{graphicx}
+\usepackage{ulem}
+\usepackage{color}
+\usepackage{fancyvrb}
+% get rid of junk
+\usetheme{default}
+\beamertemplatenavigationsymbolsempty
+\hypersetup{pdfpagemode=UseNone} % don't show bookmarks on initial view
+% font
+\usefonttheme{professionalfonts}
+\usefonttheme{serif}
+% page number
+\setbeamertemplate{footline}{%
+    \raisebox{5pt}{\makebox[\paperwidth]{\hfill\makebox[20pt]{\color{gray}
+          \scriptsize\insertframenumber}}}\hspace*{5pt}}
+% add a bit of space at the top of the notes page
+  \addtobeamertemplate{note page}{\setlength{\parskip}{12pt}}
+
+\setbeamertemplate{blocks}[rounded][shadow=true]
+
+% Notes or not
+\setbeameroption{hide notes}
+%%\setbeamertemplate{note page}[plain]
+%%\pgfpagesuselayout{2 on 1}
+%%%%
+%%\setbeameroption{hide notes}
+
+\newenvironment{xframe}[2][]
+  {\begin{frame}[fragile,environment=xframe,#1]
+  \frametitle{#2}}
+  {\end{frame}}
+
+\title{Workshop: R and Bioinformatics}
+\author{Jean Monlong \& Simon Papillon}
+\institute{Human Genetics department}
+\date{October 28, 2013}
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%
+%% Title Slide
+\begin{frame}
+  \titlepage
+  \centering
+  \includegraphics[page=1,height=.1\textheight]{imgs/McGill-Logo1.png}
+
+  \note{Welcome blabla: \\ 
+    Today not package tutorial but ideas/tips.
+    Online tutorial list todo
+  }
+\end{frame}
+
+%%%%
+%%%%%%%%%%%%%%%%%%%%%%%
+\section{Why using R for bioinformatics ?}
+%%%%%%%%%%%%%%%%%%%%%%%
+%%%%
+
+\begin{frame}[label=handout]{Why using R for bioinformatics ?}
+  \begin{itemize}
+  \item Flexible statistics and data visualization software.
+  \item Many packages and a vast community: Bioconductor.
+  \item Simple and easy, compared at other computing languages.
+  \end{itemize}
+  \note{671 packages in Bioconductor. Bioconductor provides tools for the analysis and comprehension of high-throughput genomic data.}
+\end{frame}
+
+%%%%%%%
+
+\begin{frame}[label=handout]{Today's workshop}
+  \begin{block}{Goal}
+    \begin{itemize}
+    \item Explain and demonstrate some key principles to do good bioinformatics.
+    \item How to structure the analysis, how to write efficient script, explore your data. 
+    \item What to do and not to do...
+      \bigskip
+    \item This is {\bf NOT} a package tutorial but will point at useful resources.
+    \end{itemize}    
+  \end{block}
+  \medskip
+
+  \begin{block}{Learning from your mistakes}
+    You will get errors today, before raising your hand:
+    \begin{itemize}
+    \item Check your command for typos.
+    \item Try to understand the error message.
+    \item Check your input/objects. 
+    \end{itemize}    
+  \end{block}
+\end{frame}
+
+%%%%%%%
+
+
+%%%%%%%
+
+%%%%%%%
+\section{Reminder and updates}
+
+\begin{xframe}{Functions}
+  {\it\small Previously on HGSS workshops: }
+  \begin{block}{}
+    \begin{description}
+      \item[function] To define functions.
+      \item[return] Define what will be returned by the function. 
+    \end{description}
+    All the object created within the function are temporary.
+    \bigskip
+    \end{block}
+    \begin{block}{Structure}    
+\begin{Verbatim}[commandchars=\\\{\}]
+\color{green!60!black}myFunctionName \color{blue}<- function(\color{green!60!black}input.obj1\color{blue},\color{green!60!black}second.input.obj \color{blue}) \{
+\color{black}...
+... Intructions on 'input.obj1' and 'second.input.obj'
+...
+\color{blue}return(\color{green!60!black}my.output.obj\color{blue})
+\color{blue}\}
+
+\color{black}myFunctionName(1,c(2,4,5))
+\end{Verbatim}
+  \end{block}
+\end{xframe}
+
+\begin{xframe}{Conditions}
+  \begin{block}{Logical tests}
+	
+    \begin{description}
+    \item[{\sf ==}] Are both values equal.
+    \item[{\sf $>$ or $>=$}] Is the left value greater (greater or equal)
+    than the right value.
+	\item[{\sf $<$ or $<=$}] Is the left value smaller (smaller or equal) than
+	the left value.
+    \item[!] Is a NOT operator that negates the value of a test.
+    \item[$|$] Is an OR operator used to combine logical tests. Returns TRUE if
+    either are TRUE.
+    \item[\&] Is an AND operator used to combine logical tests. Returns TRUE
+    if both are TRUE
+    \end{description}
+  \end{block}
+  \begin{exampleblock}{Example}
+\begin{verbatim}
+test <- 2 + 2 == 4    ## (TRUE)
+!test                 ## (FALSE)
+test | !test          ## (TRUE)
+test & !test          ## (FALSE)
+\end{verbatim}  
+  \end{exampleblock}
+  \note{Here I changed the $||$ and \&\& by the simple $|$ and \&. I know they should be used for vectorized test but it works and it's simpler for them to remember.}
+\end{xframe}
+
+%%%%%%%%%%%
+
+\begin{xframe}{Conditions}
+  \begin{block}{Boolean}
+  Any logical tests can be vectorized (compare 2 {\sf vector}s).
+    \begin{description}
+    %\item[$\mid$] Is a OR operator for vectorized application.
+    %\item[\&] Is an AND operator for vectorized application.
+    \item[which] Returns the index of the {\sf vector}s with {\it TRUE} values.
+    %%\item[any] Take a {\sf vector} of {\it logical} and return {\it TRUE} if at least one value is {\it TRUE}.
+    %%\item[\%in\%] Vectorized any. See example/supp material.
+    \end{description}
+  \end{block}
+  \begin{exampleblock}{Example}
+\begin{verbatim}
+5:8 == 6                         ## FALSE,TRUE,FALSE,FALSE
+5:8 >= 6 & 5:8<=7                ## FALSE,TRUE,TRUE,FALSE
+
+c(TRUE, TRUE) & c(TRUE, FALSE)   ## TRUE,FALSE
+c(TRUE, FALSE) | c(FALSE, FALSE) ## TRUE,FALSE
+
+which(5:10 == 6)                 ## 2
+which(5:10 > 6)                  ## 3,4,5,6
+\end{verbatim}  
+  \end{exampleblock}
+  \note{Question: write a function that :\\filters out numbers smaller than 3\\The same with the threshold  as a parameter: {\sf largerThan $<-$ function(data, threshold) \{...\}} }
+\end{xframe}
+%%%%%%%%%
+
+\begin{frame}{Conditions - Exercise}
+  \begin{block}{Exercise}
+  Create a function that: 
+  \begin{enumerate}
+  \item remove values below $3$ from a {\sf vector}.
+  \item  remove values below a specified threshold from a {\sf vector}.
+  \end{enumerate}
+  \end{block}
+
+  \bigskip
+
+  \begin{block}{For more advanced users}
+    Have a look at these functions on {\it logical} vectors:
+    \begin{itemize}
+    \item any, $\%$in$\%$.
+    \item sum, mean, table.
+    \end{itemize}
+  \end{block}
+
+  \bigskip
+
+  \begin{block}{Extra tips}
+    \begin{itemize}
+    \item Don't filter out, keep in.
+    \item Use the boolean vector directly between $[~]$.
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+%%%%%%%
+
+%%%%%%%
+
+\begin{xframe}{Testing conditions}
+  \begin{block}{{\sf if else}}
+    Test a condition, if {\it TRUE} run some instruction, if {\it FALSE} something else (or nothing).
+\begin{verbatim}
+if( Condition ){
+...   Instructions
+} 
+\end{verbatim}  
+  \end{block}
+  \begin{exampleblock}{Example}
+\begin{verbatim}
+if(length(luckyNumbers)>3){
+  cat("Too many lucky numbers.\n")
+  luckyNumbers = luckyNumbers[1:3]
+} else if(length(luckyNumbers)==3){
+  cat("Just enough lucky numbers.\n")
+} else {
+  cat("You need more lucky numbers.\n")
+}
+\end{verbatim}  
+  \end{exampleblock}
+  \note{Question: write a function that classify the average expression of a vector into ``low'' for lower than 3, ``medium'' between 3 and 7, ``high'' greater than 7. }
+\end{xframe}
+
+\begin{xframe}{Loops}
+  \begin{block}{{\sf for} loops}
+    Iterate over the element of a container and run instructions.
+\begin{verbatim}
+for(v in vec){
+...  Instruction
+}
+\end{verbatim}  
+  \end{block}
+  \begin{block}{{\sf while} loops}
+    Run instructions as long as a condition is {\it TRUE}.
+\begin{verbatim}
+while( CONDITION ){
+...  Instruction
+}
+\end{verbatim}  
+  \end{block}
+  \begin{exampleblock}{Example}
+\begin{verbatim}
+facto = 1
+for(n in 1:10){
+   facto = facto * n
+}
+\end{verbatim}  
+  \end{exampleblock}
+  \note{Colour in structures\\Apply versus loop speech then vote if they want to do the exercice?}
+\end{xframe}
+
+%%%%%%%%%
+
+\begin{frame}{Exercises}
+  \begin{block}{{\sf if else}}
+    Create a function that classify the average value of a {\sf vector}. It returns:
+    \begin{itemize}
+    \item {\it low} if the average if below $3$.
+    \item {\it medium} if the average if between $3$ and $7$.
+    \item {\it high} if the average if above $7$.
+    \end{itemize}
+  \end{block}
+  
+  \bigskip
+  
+  \begin{block}{Loops}
+    Write a function that computes the mean values of a matrix columns:
+    \begin{enumerate}
+    \item using the {\sf apply}  function.
+    \item using a {\sf for} loop.
+    \item (using a {\sf while} loop.)
+    \end{enumerate}
+  \end{block}
+\end{frame}
+
+
+\section{Scripting and analysis structure}
+
+\begin{frame}{Important principles}
+  \begin{block}{Scripting}
+    Write scripts of your analysis: 
+    \begin{itemize}
+    \item Keeping track, easy rerun, easy parameter tweaking.
+    \item {\sf Rstudio} or other interfaces ({\sf Emacs+ESS},...).
+    \end{itemize}
+  \end{block}
+  \begin{block}{Clear and modular code}
+    \begin{itemize}
+    \item Define clear analysis steps.
+    \item Write function(s) for each step.
+      \begin{itemize}
+      \item Keeps the data and parameters used clear (for you and for R).
+      \item No confusing temporary objects.
+      \item No repeating code.
+      \item More suitable for {\sf apply}-like usage.
+      \item Easy parameter tweaking.
+      \end{itemize}
+    \end{itemize}
+  \end{block}
+  \begin{block}{Efficiency matters}
+    \begin{itemize}
+    \item Data structure and manipulation.
+    \item Especially relevant with our large data.
+    \end{itemize}
+
+  \end{block}
+  \note{Simon what interface do you use ?}
+\end{frame}
+
+\begin{frame}{Exercise}
+  \begin{block}{Goal}
+    Analyze some variant information from exome-sequencing following the principles presented before.
+  \end{block}
+  \begin{block}{Input data}
+    Genotype information for XX variants and YY samples, Y1 from controls and Y2 from cases.
+  \end{block}
+  \begin{block}{Analysis steps}
+    \begin{enumerate}
+    \item Filtering bad quality data: SNPs with no heterogeneity, too many missing values, Hardy-Weinberg equilibrium...
+    \item Compute some descriptive statistics: distribution of the frequencies.
+    \item Test differences between groups: t-test or equivalent, Wilcoxon test. 
+    \item Retrieve interesting cases: most significant and biggest effect size.
+    \end{enumerate}
+  \end{block}
+  Have a look at the data !
+\end{frame}
+
+\begin{frame}{Importing large files}
+  Extra parameters for read.table: nb of lines, column classes.
+\end{frame}
+
+\begin{frame}{Manipulating files}
+  No extensive concatenation, rbind, etc
+\end{frame}
+
+
+\begin{frame}[label=justForUs]{More details on the functions}
+  \begin{block}{Filter function}
+    \begin{itemize}
+    \item Minor allele frequency threshold.
+    \item Minimum number of samples with non-missing values.
+    \item Hardy-Weinberg equilibrium.
+    \end{itemize}
+  \end{block}
+  \begin{block}{Statistics function}
+    \begin{itemize}
+    \item Minor allele frequency distribution
+    \end{itemize}
+  \end{block}
+  \begin{block}{Test function}
+    \begin{itemize}
+    \item Fisher-test.
+    \end{itemize}
+  \end{block}
+  \begin{block}{Extra information}
+    \begin{itemize}
+    \item VariantAnnotation.
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}{Annotation}
+  VariantAnnotation
+\end{frame}
+
+\begin{frame}{GenomicRanges and specific annotation}
+  
+\end{frame}
+
+
+%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\section{Data exploration}
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%
+
+\begin{frame}{Data exploration - All you can plot}
+  \begin{block}{Utility}
+    \begin{itemize}
+    \item Get an idea of the quality of the data and potential issues.
+    \item Get a full answer.
+    \item Detect potential biases.
+    \item (Find unexpected results.)
+    \end{itemize}
+  \end{block}
+  
+  \begin{block}{Through all your analysis}
+    \begin{itemize}
+    \item Quality Control plots at the beginning.
+    \item Control plot after each steps.
+    \item Awesome plot with your results.
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}{QC plots}
+  \begin{block}{Aim}
+    Assess the quality of your data and potential artefacts that could bias your analysis.
+  \end{block}
+  \begin{block}{Basic approaches}
+    \begin{itemize}
+    \item Principal Component Analysis: representing the largest variation in the data.
+    \item Clustering: summarizing similarity relations between samples/genes.
+    \item Testing metadata: gender, age, ...
+    \end{itemize}
+  \end{block}
+  \note{wikipedia cartoon for PCA, cluster tree}
+\end{frame}
+
+\begin{xframe}[shrink=10]{QC plots - Functions}
+  \begin{block}{PCA using {\sf prcomp}}
+    PCA of the matrix columns; plot of the variance explained by the first PCs; representation of the {\bf rows} using the first two PCs.
+\begin{verbatim}
+peeSeaAye = prcomp(input.matrix)
+plot(peeSeaAye)
+plot(peeSeaAye$x,type="n")
+text(peeSeaAye$x,labels=rownames(input.matrix))
+\end{verbatim}  
+  \end{block}
+  \begin{block}{Clustering using {\sf hclust}}
+    Clustering using a \uline{distance} matrix, e.g. from correlation between {\bf columns}.
+\begin{verbatim}
+cor.dist = as.dist(1-cor(input.matrix))
+
+kleusteur = hclust(cor.dist,method="ward")
+plot(kleusteur)
+
+library(MASS)
+mDeeS = isoMDS(cor.dist)
+plot(mDeeS$points)
+\end{verbatim}  
+  \end{block}
+  \note{highlight the functions\\Importance of the distance demonstration}
+\end{xframe}
+
+\begin{frame}{Exercise/Example}
+  Do it on previous exercice
+\end{frame}
+
+\begin{frame}{Heatmaps}
+  
+\end{frame}
+
+\begin{xframe}{Testing bias from metadata}
+  \begin{block}{Linear regression}
+    For example, between Principal Component and metadata. 
+  \end{block}
+  \begin{exampleblock}{}
+\begin{verbatim}
+summary(lm(peeSeaAye$x[,1]~gender+age))
+\end{verbatim}  
+  \end{exampleblock}
+\end{xframe}
+
+\begin{frame}{Exercice}
+  Plot: 
+  \begin{itemize}
+  \item the distribution of ....
+  \item the relation between ... and ...
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Extra: {\sf ggplot2}}
+  \begin{block}{Introduction}
+    A package to constuct beautiful and/or complex graphs. Many aspects of the graph are arranged automatically but everything can be specified. Easy layers addition.
+  \end{block}
+  
+  EXAMPLE
+
+\end{frame}
+
+\begin{xframe}[shrink=10]{Extra: {\sf ggplot2} - {\sf data.frame} only}
+    \begin{block}{{\sf data.frame}}
+    The input object is always a {\sf data.frame}, with each rows being one {\it "point"} to represent and each column the different information on it.
+    \medskip
+    
+    {\small {\sf data.frame}: in its simple version, a {\sf matrix} with different data type possible in each column.}
+  \end{block}
+
+  \begin{block}{Useful functions}
+    \begin{description}
+    \item[data.frame] To create a {\sf data.frame}.
+    \item[subset] To subset a {\sf data.frame} using condition on the columns.
+    \item[melt/reshape] To deconstruct a matrix into data.frame, or the opposite. {\it reshape} package.
+    \item[aggregate] To compute summary statistics on subset of the data.frame.
+    \item[ddply] {\sf apply}-like function on subset of the data.frame. {\it plyr} package.
+    \end{description}
+  \end{block}
+  \begin{exampleblock}{Example}
+\begin{verbatim}
+gene.expression.df = data.frame(gene=c("A","B","C"),
+                                   gene.expression=1:3)
+dim(gene.expression.df)
+gene.expression.df = subset(gene.expression.df, gene.expression>1)
+\end{verbatim}  
+  \end{exampleblock}
+\end{xframe}
+
+\begin{xframe}{Extra: {\sf ggplot2} - Simple graph}
+  \begin{block}{}
+    
+  \end{block}
+\end{xframe}
+
+\section{More resource online}
+
+\begin{frame}[shrink=10]{Online tutorials}
+  \begin{block}{R}
+    \begin{itemize}
+    \item \url{http://www.twotorials.com/} : small video-tutorials.
+    \item \url{http://www.r-tutor.com/} : R and statistics small web-tutorials.
+    \item \url{www.youtube.com/user/rdpeng/} : Coursera {\it Computing for Data Analysis} videos. Other interesting videos, e.g. {\it ggplot2}.
+    \item \url{http://cran.r-project.org/manuals.html} : R manual.
+    \end{itemize}
+  \end{block}
+  \begin{block}{R and Bioinformatics}
+    \begin{itemize}
+    \item \url{http://stephenturner.us/p/edu} List of online resources for Bioinformatics.
+    \item \url{http://bioinformatics.ca/workshops/2013/} : Bioinformatics workshop material.
+    \item \url{http://manuals.bioinformatics.ucr.edu/home/R_BioCondManual} : Pieces of code for bioinformatics analysis, plots. Including Bioconductor.
+    \item \url{http://bioconductor.org/help/course-materials/2013/} : Bioinformatics tutorials material: pdf and R scripts.
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}{Useful packages}
+  \begin{description}
+  \item[GenomicRanges] 
+  \item[AnnotationHub]
+  \item[TxBD]
+  \end{description}
+\end{frame}
+
+\section{Extra slides}
+
+%%%%%%%
+
+\begin{xframe}{Lists}
+  \begin{block}{Flexible container}
+    A {\sf list} can contain any element type. It does not require elements to be of
+    the same type.
+    \begin{description}
+      \item[list] Create a {\sf list}.
+      \item[{l[[i]]} ] Get or set the $i^{th}$ object of the {\sf list}.
+      \item[l\$toto] Get or set the element labeled as {\it toto}.
+      \item[names] Get or set the names of the {\sf list} elements.
+      \item[length] Get the number of element in the {\sf list}.
+      \item[str] Output the structure of a R object.
+    \end{description}
+  \end{block}
+  \begin{exampleblock}{Example}
+\begin{verbatim}
+l = list(vec=1:10,mat=matrix(runif(25),5))
+str(l)
+l
+l$vec = 1
+l
+\end{verbatim}
+  \end{exampleblock}
+  \note{Questions:\\Make a phonebook: A list of 3 elements (vectors): names,
+  phone number and address}
+\end{xframe}
+
+%%%%%%%
+
+\begin{xframe}{Functions - {\sf lapply}}
+  \begin{block}{apply for {\sf list}s}
+    \begin{itemize}
+    \item Useful way to iterate through {\sf list}s.
+    \end{itemize}
+  \end{block}
+  \begin{exampleblock}{Example}
+\begin{verbatim}
+file_list <- list.files('.')
+files_content <- lapply(file_list, function(file) \{
+	data <- read.csv(file)
+	#Do something with the data
+	return(data)
+\})
+\end{verbatim}  
+  \end{exampleblock}
+\end{xframe}
+
+
+\end{document}
