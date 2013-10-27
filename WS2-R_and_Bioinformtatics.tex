@@ -75,9 +75,9 @@
 
 \begin{frame}[label=handout]{Goal of the workshop}
   \begin{itemize}
-  \item Explain and demonstrate some keys to do good bioinformatics.
+  \item Explain and demonstrate some key principles to do good bioinformatics.
   \item How to structure the analysis, how to write efficient script. 
-  \item What to do or not to do...
+  \item What to do and not to do...
     \bigskip
   \item This is {\bf NOT} a package tutorial but will point at useful resources.
   \end{itemize}
@@ -177,13 +177,22 @@ which(5:10 > 6)                  ## 3,4,5,6
   \end{enumerate}
   \end{block}
 
-  \vspace{.2\textheight}
+  \bigskip
 
   \begin{block}{For more advanced users}
-    Have a look of these functions on {\it logical} vectors:
+    Have a look at these functions on {\it logical} vectors:
     \begin{itemize}
     \item any, $\%$in$\%$.
     \item sum, mean, table.
+    \end{itemize}
+  \end{block}
+
+  \bigskip
+
+  \begin{block}{Extra tips}
+    \begin{itemize}
+    \item Don't filter out, keep in.
+    \item Use the boolean vector directly between $[~]$.
     \end{itemize}
   \end{block}
 \end{frame}
@@ -194,7 +203,7 @@ which(5:10 > 6)                  ## 3,4,5,6
 
 \begin{xframe}{Testing conditions}
   \begin{block}{{\sf if else}}
-    Test if a condition, if {\it TRUE} run some instruction, if {\it FALSE} something else (or nothing).
+    Test a condition, if {\it TRUE} run some instruction, if {\it FALSE} something else (or nothing).
 \begin{verbatim}
 if( Condition ){
 ...   Instructions
@@ -216,23 +225,90 @@ if(length(luckyNumbers)>3){
   \note{Question: write a function that classify the average expression of a vector into ``low'' for lower than 3, ``medium'' between 3 and 7, ``high'' greater than 7. }
 \end{xframe}
 
+\begin{xframe}{Loops}
+  \begin{block}{{\sf for} loops}
+    Iterate over the element of a container and run instructions.
+\begin{verbatim}
+for(v in vec){
+...  Instruction
+}
+\end{verbatim}  
+  \end{block}
+  \begin{block}{{\sf while} loops}
+    Run instructions as long as a condition is {\it TRUE}.
+\begin{verbatim}
+while( CONDITION ){
+...  Instruction
+}
+\end{verbatim}  
+  \end{block}
+  \begin{exampleblock}{Example}
+\begin{verbatim}
+facto = 1
+for(n in 1:10){
+   facto = facto * n
+}
+\end{verbatim}  
+  \end{exampleblock}
+  \note{Colour in structures\\Apply versus loop speech then vote if they want to do the exercice?}
+\end{xframe}
+
 %%%%%%%%%
 
-\begin{frame}{{\sf if else} - Exercise}
-  Create a function that classify the average value of a {\sf vector}. It returns:
-  \begin{itemize}
-  \item {\it low} if the average if below $3$.
-  \item {\it medium} if the average if between $3$ and $7$.
-  \item {\it high} if the average if above $7$.
-  \end{itemize}
+\begin{frame}{Exercises}
+  \begin{block}{{\sf if else}}
+    Create a function that classify the average value of a {\sf vector}. It returns:
+    \begin{itemize}
+    \item {\it low} if the average if below $3$.
+    \item {\it medium} if the average if between $3$ and $7$.
+    \item {\it high} if the average if above $7$.
+    \end{itemize}
+  \end{block}
+  
+  \bigskip
+  
+  \begin{block}{Loops}
+    Write a function that computes the mean values of a matrix columns:
+    \begin{enumerate}
+    \item using the {\sf apply}  function.
+    \item using a {\sf for} loop.
+    \item (using a {\sf while} loop.)
+    \end{enumerate}
+  \end{block}
 \end{frame}
 
 
 \section{Scripting and analysis structure}
 
-\begin{frame}{Principles}
-  Scripts, softwares
-  Functions/modules: No repetition, understandable, well defined and optimized(memory, data structure).
+\begin{frame}{Important principles}
+  \begin{block}{Scripting}
+    Write scripts of your analysis: 
+    \begin{itemize}
+    \item Keeping track, easy rerun, easy parameter tweaking.
+    \item {\sf Rstudio} or other interfaces ({\sf Emacs+ESS},...).
+    \end{itemize}
+  \end{block}
+  \begin{block}{Clear and modular code}
+    \begin{itemize}
+    \item Define clear analysis steps.
+    \item Write function(s) for each step.
+      \begin{itemize}
+      \item Keeps the data and parameters used clear (for you and for R).
+      \item No confusing temporary objects.
+      \item No repeating code.
+      \item More suitable for {\sf apply}-like usage.
+      \item Easy parameter tweaking.
+      \end{itemize}
+    \end{itemize}
+  \end{block}
+  \begin{block}{Efficiency matters}
+    \begin{itemize}
+    \item Data structure and manipulation.
+    \item Especially relevant with our large data.
+    \end{itemize}
+
+  \end{block}
+  \note{Simon what interface do you use ?}
 \end{frame}
 
 \begin{frame}{Example}
@@ -240,20 +316,6 @@ if(length(luckyNumbers)>3){
 \end{frame}
 
 \begin{frame}{Big exercise}
-  
-\end{frame}
-
-\section{QC plots}
-
-\begin{frame}{Introduction}
-  At the beginning, overview data, cluster, pca
-\end{frame}
-
-\begin{frame}{Functions}
-  
-\end{frame}
-
-\begin{frame}{Exercise/Example}
   
 \end{frame}
 
@@ -267,9 +329,83 @@ if(length(luckyNumbers)>3){
   
 \end{frame}
 
-\section{Data exploration}
 
-\begin{frame}{All you can plot}
+
+
+%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\section{Data exploration}
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%
+
+\begin{frame}{Data exploration - All you can plot}
+  \begin{block}{Utility}
+    \begin{itemize}
+    \item Get an idea of the quality of the data and potential issues.
+    \item Get a full answer.
+    \item Detect potential biases.
+    \item (Find unexpected results.)
+    \end{itemize}
+  \end{block}
+  
+  \begin{block}{Through all your analysis}
+    \begin{itemize}
+    \item Quality Control plots at the beginning.
+    \item Control plot after each steps.
+    \item Awesome plot with your results.
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}{QC plots}
+  \begin{block}{Aim}
+    Assess the quality of your data and potential artefacts that could bias your analysis.
+  \end{block}
+  \begin{block}{Basic approaches}
+    \begin{itemize}
+    \item Principal Component Analysis: representing the largest variation in the data.
+    \item Clustering: summarizing similarity relations between samples/genes.
+    \item Testing metadata: gender, age, ...
+    \end{itemize}
+  \end{block}
+  \note{wikipedia cartoon for PCA, cluster tree}
+\end{frame}
+
+\begin{xframe}[shrink=10]{QC plots - Functions}
+  \begin{block}{PCA using {\sf prcomp}}
+    PCA of the matrix columns; plot of the variance explained by the first PCs; representation of the {\bf rows} using the first two PCs.
+\begin{verbatim}
+peeSeaAye = prcomp(input.matrix)
+plot(peeSeaAye)
+plot(peeSeaAye$x,type="n")
+text(peeSeaAye$x,labels=rownames(input.matrix))
+\end{verbatim}  
+  \end{block}
+  \begin{block}{Clustering using correlation distance}
+    Clustering using a \uline{distance} matrix, e.g. from correlation between {\bf columns}.
+\begin{verbatim}
+cor.dist = as.dist(1-cor(input.matrix))
+
+kleusteur = hclust(cor.dist,method="ward")
+plot(kleusteur)
+
+library(MASS)
+mDeeS = isoMDS(cor.dist)
+plot(mDeeS$points)
+\end{verbatim}  
+  \end{block}
+  \note{highlight the functions\\Importance of the distance demonstration}
+\end{xframe}
+
+\begin{frame}{Exercise/Example}
+  Do it on previous exercice
+\end{frame}
+
+\begin{frame}{Heatmaps}
+  
+\end{frame}
+
+\begin{frame}{Testing bias from metadata}
   
 \end{frame}
 
