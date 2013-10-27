@@ -147,8 +147,8 @@
 \begin{verbatim}
 test <- 2 + 2 == 4    ## (TRUE)
 !test                 ## (FALSE)
-test & !test          ## (FALSE)
 test | !test          ## (TRUE)
+test & !test          ## (FALSE)
 \end{verbatim}  
   \end{exampleblock}
   \note{Here I changed the $||$ and \&\& by the simple $|$ and \&. I know they should be used for vectorized test but it works and it's simpler for them to remember.}
@@ -341,7 +341,17 @@ for(n in 1:10){
     \item Retrieve interesting cases: most significant and biggest effect size.
     \end{enumerate}
   \end{block}
+  Have a look at the data !
 \end{frame}
+
+\begin{frame}{Importing large files}
+  Extra parameters for read.table: nb of lines, column classes.
+\end{frame}
+
+\begin{frame}{Manipulating files}
+  No extensive concatenation, rbind, etc
+\end{frame}
+
 
 \begin{frame}[label=justForUs]{More details on the functions}
   \begin{block}{Filter function}
@@ -368,15 +378,13 @@ for(n in 1:10){
   \end{block}
 \end{frame}
 
-\begin{frame}{Importing large files}
-  Extra parameters for read.table: nb of lines, column classes.
+\begin{frame}{Annotation}
+  VariantAnnotation
 \end{frame}
 
-\begin{frame}{Manipulating files}
-  No extensive concatenation, rbind, etc
+\begin{frame}{GenomicRanges and specific annotation}
+  
 \end{frame}
-
-
 
 
 %%%%%%%%%%%
@@ -428,7 +436,7 @@ plot(peeSeaAye$x,type="n")
 text(peeSeaAye$x,labels=rownames(input.matrix))
 \end{verbatim}  
   \end{block}
-  \begin{block}{Clustering using correlation distance}
+  \begin{block}{Clustering using {\sf hclust}}
     Clustering using a \uline{distance} matrix, e.g. from correlation between {\bf columns}.
 \begin{verbatim}
 cor.dist = as.dist(1-cor(input.matrix))
@@ -463,9 +471,55 @@ summary(lm(peeSeaAye$x[,1]~gender+age))
   \end{exampleblock}
 \end{xframe}
 
-\begin{frame}{Extra: ggplot2 package}
-  
+\begin{frame}{Exercice}
+  Plot: 
+  \begin{itemize}
+  \item the distribution of ....
+  \item the relation between ... and ...
+  \end{itemize}
 \end{frame}
+
+\begin{frame}{Extra: {\sf ggplot2}}
+  \begin{block}{Introduction}
+    A package to constuct beautiful and/or complex graphs. Many aspects of the graph are arranged automatically but everything can be specified. Easy layers addition.
+  \end{block}
+  
+  EXAMPLE
+
+\end{frame}
+
+\begin{xframe}[shrink=10]{Extra: {\sf ggplot2} - {\sf data.frame} only}
+    \begin{block}{{\sf data.frame}}
+    The input object is always a {\sf data.frame}, with each rows being one {\it "point"} to represent and each column the different information on it.
+    \medskip
+    
+    {\small {\sf data.frame}: in its simple version, a {\sf matrix} with different data type possible in each column.}
+  \end{block}
+
+  \begin{block}{Useful functions}
+    \begin{description}
+    \item[data.frame] To create a {\sf data.frame}.
+    \item[subset] To subset a {\sf data.frame} using condition on the columns.
+    \item[melt/reshape] To deconstruct a matrix into data.frame, or the opposite. {\it reshape} package.
+    \item[aggregate] To compute summary statistics on subset of the data.frame.
+    \item[ddply] {\sf apply}-like function on subset of the data.frame. {\it plyr} package.
+    \end{description}
+  \end{block}
+  \begin{exampleblock}{Example}
+\begin{verbatim}
+gene.expression.df = data.frame(gene=c("A","B","C"),
+                                   gene.expression=1:3)
+dim(gene.expression.df)
+gene.expression.df = subset(gene.expression.df, gene.expression>1)
+\end{verbatim}  
+  \end{exampleblock}
+\end{xframe}
+
+\begin{xframe}{Extra: {\sf ggplot2} - Simple graph}
+  \begin{block}{}
+    
+  \end{block}
+\end{xframe}
 
 \section{More resource online}
 
@@ -489,7 +543,62 @@ summary(lm(peeSeaAye$x[,1]~gender+age))
 \end{frame}
 
 \begin{frame}{Useful packages}
-  
+  \begin{description}
+  \item[GenomicRanges] 
+  \item[AnnotationHub]
+  \item[TxBD]
+  \end{description}
 \end{frame}
+
+\section{Extra slides}
+
+%%%%%%%
+
+\begin{xframe}{Lists}
+  \begin{block}{Flexible container}
+    A {\sf list} can contain any element type. It does not require elements to be of
+    the same type.
+    \begin{description}
+      \item[list] Create a {\sf list}.
+      \item[{l[[i]]} ] Get or set the $i^{th}$ object of the {\sf list}.
+      \item[l\$toto] Get or set the element labeled as {\it toto}.
+      \item[names] Get or set the names of the {\sf list} elements.
+      \item[length] Get the number of element in the {\sf list}.
+      \item[str] Output the structure of a R object.
+    \end{description}
+  \end{block}
+  \begin{exampleblock}{Example}
+\begin{verbatim}
+l = list(vec=1:10,mat=matrix(runif(25),5))
+str(l)
+l
+l$vec = 1
+l
+\end{verbatim}
+  \end{exampleblock}
+  \note{Questions:\\Make a phonebook: A list of 3 elements (vectors): names,
+  phone number and address}
+\end{xframe}
+
+%%%%%%%
+
+\begin{xframe}{Functions - {\sf lapply}}
+  \begin{block}{apply for {\sf list}s}
+    \begin{itemize}
+    \item Useful way to iterate through {\sf list}s.
+    \end{itemize}
+  \end{block}
+  \begin{exampleblock}{Example}
+\begin{verbatim}
+file_list <- list.files('.')
+files_content <- lapply(file_list, function(file) \{
+	data <- read.csv(file)
+	#Do something with the data
+	return(data)
+\})
+\end{verbatim}  
+  \end{exampleblock}
+\end{xframe}
+
 
 \end{document}
