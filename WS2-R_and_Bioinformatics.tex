@@ -197,7 +197,7 @@ which(5:10 > 6)                  ## 3,4,5,6
   \begin{block}{For more advanced users}
     Have a look at these functions on {\it logical} vectors:
     \begin{itemize}
-    \item any, $\%$in$\%$.
+    \item any, $\%$ in$\%$.
     \item sum, mean, table.
     \end{itemize}
   \end{block}
@@ -600,5 +600,157 @@ files_content <- lapply(file_list, function(file) \{
   \end{exampleblock}
 \end{xframe}
 
+%%%%%%%
 
+\begin{xframe}{Complete study}
+  \begin{block}{DNA methylation data}
+    \begin{itemize}
+    \item Identify sample outliers (and remove them).
+    \item Identify co-variates (sex, age) using PCA.
+    \item Use heatmap to plot sample groupings.
+    \item Point out differentially methylated sites.
+    \item Plot methylation levels of interesting sites.
+    \end{itemize}
+  \end{block}
+  \begin{exampleblock}{The data set}
+\begin{verbatim}
+beta_value # The methylation data
+probe_data # The annotation of each probe
+pheno_data # The annotation of each sample (metadata)
+\end{verbatim}  
+  \end{exampleblock}
+  
+\begin{exampleblock}{Playing with the data}
+Check the first few rows of each object (remember the head() function)
+  \end{exampleblock}
+\end{xframe}
+%%%%%%%
+
+\begin{xframe}{Identify outliers}
+  \begin{block}{Checking the distribution}
+    \begin{itemize}
+      \item Identify the {\sf case} samples. 
+      \item Take a look at the density of those samples.
+      \item Are there any samples that stand out ?
+    \end{itemize}
+  \end{block}
+  \begin{exampleblock}{Useful functions}
+\begin{verbatim}
+density(x) # Compute the density of x
+plot(x) # Create a plot of x
+plot(denisty(x)) # Plot the density of x
+\end{verbatim}
+  \end{exampleblock}
+\end{xframe}
+
+%%%%%%%
+\begin{xframe}{Identify outliers}
+  \begin{block}{Using the PCA}
+    \begin{itemize}
+      \item Using all samples, plot the first 2 Principle Components.
+      \item Color the samples according to their Sample_Group status. 
+      \item How do the outliers identified previously behave ?
+      \item Remove those samples from your data set (dont forget to propagate
+      the changes in all objects!).
+    \end{itemize}
+  \end{block}
+   \begin{exampleblock}{PCA example}
+\begin{verbatim}
+pca <- prcomp(t(beta_value))
+plot(pca$x)
+\end{verbatim}  
+  \end{exampleblock}
+\end{xframe}
+
+%%%%%%%
+
+%%%%%%%
+\begin{xframe}{Identify phenotypic co-variates}
+  \begin{block}{Using the PCA}
+    \begin{itemize}
+      \item Re-compute the PCA without the outlier samples.
+      \item Plot the 1st PC with the age of the samples (do you notice
+      something ?)
+      \item Color the sample according to their Sample_Group status
+      \item Re-compute the PCA using {\sf control} samples only.
+	  \item Does sex have an effect on data ?
+	  \item Knowing that females have 2 X chromosomes, 1 silenced by methylation
+	  are you able to predict the sex of the samples?
+	  \item Check your prediction in the PCA plot
+    \end{itemize}
+    \begin{exampleblock}{Predicting the sex}
+\begin{verbatim}
+# Here we assume that the X chromosome is more methylated
+# in females
+x_probes <- probe_data$chrom == "chrX"
+summary(x_probes)
+
+controls <- pheno_data$Sample_Group == "control"
+summary(controls)
+pca <- prcomp(t(beta_value[x_probes, controls]))
+mean_x_meth <- apply(beta_value[x_probes, controls], 2, mean)
+color_vec <- ifelse(mean_x_meth >= 0.45, "red", "blue")
+plot(pca$x, col=color_vec)
+\end{verbatim}  
+  \end{exampleblock}   
+  \end{block}
+\end{xframe}
+
+%%%%%%%
+\begin{xframe}{Cluster the samples}
+  \begin{block}{Using the heatmap}
+    \begin{itemize}
+      \item We dont need to use the full data set (too big)
+      \item Let's find the 1,000 most variant sites and use them for clustering
+      \item Make the heatmap (see previous examples)
+      \item Color the sample according to their Sample_Group status (use
+      ColSideColors=color_vec in heatmap)
+    \end{itemize}
+    \begin{exampleblock}{Predicting the sex}
+\begin{verbatim}
+# Getting the 1,000 most variant sites
+#
+# Compute the variance
+probe_var <- apply(beta_value, 1, var)
+# Order them decreasingly
+probe_var <- order(probe_var, decreasing = T)
+# Get the top 1,000
+probe_var <- probe_var[1:1000]
+\end{verbatim}  
+  \end{exampleblock}   
+  \end{block}
+\end{xframe}
+
+%%%%%%%
+
+\begin{xframe}{Find differentially methylated sites}
+  \begin{block}{A t-test compares 2 distributions}
+    \begin{itemize}
+      \item We want to compare {\sf cases} vs {\sf controls} at each site
+      (loop)
+      \item First, make a boolean vector for cases and one for controls (we saw
+      how in previous slides)
+    \end{itemize}
+    \begin{exampleblock}{t-test, an example}
+\begin{verbatim}
+t.test(rnorm(100), rnorm(100))
+
+# Getting only the p-value
+t.test(rnorm(100), rnorm(100))$p.value
+
+\end{verbatim}  
+  \end{exampleblock}   
+  \end{block}
+\end{xframe}
+
+%%%%%%%
+\begin{xframe}{Plot differentially methylated sites}
+  \begin{block}{Using boxplots}
+    \begin{itemize}
+      \item Using a previously identified differentially methylated site make a
+      boxplot of this site for {\sf cases} and {\sf controls}.
+    \end{itemize}
+  \end{block}
+\end{xframe}
+%%%%%%%
 \end{document}
