@@ -25,7 +25,7 @@
 \setbeamertemplate{blocks}[rounded][shadow=true]
 
 % Notes or not
-\setbeameroption{hide notes}
+\setbeameroption{show notes}
 %%\setbeamertemplate{note page}[plain]
 %%\pgfpagesuselayout{2 on 1}
 %%%%
@@ -50,10 +50,6 @@
   \centering
   \includegraphics[page=1,height=.1\textheight]{imgs/McGill-Logo1.png}
 
-  \note{Welcome blabla: \\ 
-    Today not package tutorial but ideas/tips.
-    Online tutorial list todo
-  }
 \end{frame}
 
 %%%%
@@ -179,7 +175,6 @@ which(5:10 == 6)                 ## 2
 which(5:10 > 6)                  ## 3,4,5,6
 \end{verbatim}  
   \end{exampleblock}
-  \note{Question: write a function that :\\filters out numbers smaller than 3\\The same with the threshold  as a parameter: {\sf largerThan $<-$ function(data, threshold) \{...\}} }
 \end{xframe}
 %%%%%%%%%
 
@@ -237,7 +232,6 @@ if(length(luckyNumbers)>3){
 }
 \end{verbatim}  
   \end{exampleblock}
-  \note{Question: write a function that classify the average expression of a vector into ``low'' for lower than 3, ``medium'' between 3 and 7, ``high'' greater than 7. }
 \end{xframe}
 
 \begin{xframe}{Loops}
@@ -265,7 +259,6 @@ for(n in 1:10){
 }
 \end{verbatim}  
   \end{exampleblock}
-  \note{Colour in structures\\Apply versus loop speech then vote if they want to do the exercice?}
 \end{xframe}
 
 %%%%%%%%%
@@ -293,7 +286,7 @@ for(n in 1:10){
 \end{frame}
 
 
-\section{Scripting and analysis structure}
+%%%%%%%%%
 
 \begin{frame}{Important principles}
   \begin{block}{Scripting}
@@ -326,74 +319,13 @@ for(n in 1:10){
   \note{Simon what interface do you use ?}
 \end{frame}
 
-\begin{frame}{Exercise}
-  \begin{block}{Goal}
-    Analyze some variant information from exome-sequencing following the principles presented before.
-  \end{block}
-  \begin{block}{Input data}
-    Genotype information for XX variants and YY samples, Y1 from controls and Y2 from cases.
-  \end{block}
-  \begin{block}{Analysis steps}
-    \begin{enumerate}
-    \item Filtering bad quality data: SNPs with no heterogeneity, too many missing values, Hardy-Weinberg equilibrium...
-    \item Compute some descriptive statistics: distribution of the frequencies.
-    \item Test differences between groups: t-test or equivalent, Wilcoxon test. 
-    \item Retrieve interesting cases: most significant and biggest effect size.
-    \end{enumerate}
-  \end{block}
-  Have a look at the data !
-\end{frame}
-
-\begin{frame}{Importing large files}
-  Extra parameters for read.table: nb of lines, column classes.
-\end{frame}
-
-\begin{frame}{Manipulating files}
-  No extensive concatenation, rbind, etc
-\end{frame}
-
-
-\begin{frame}[label=justForUs]{More details on the functions}
-  \begin{block}{Filter function}
-    \begin{itemize}
-    \item Minor allele frequency threshold.
-    \item Minimum number of samples with non-missing values.
-    \item Hardy-Weinberg equilibrium.
-    \end{itemize}
-  \end{block}
-  \begin{block}{Statistics function}
-    \begin{itemize}
-    \item Minor allele frequency distribution
-    \end{itemize}
-  \end{block}
-  \begin{block}{Test function}
-    \begin{itemize}
-    \item Fisher-test.
-    \end{itemize}
-  \end{block}
-  \begin{block}{Extra information}
-    \begin{itemize}
-    \item VariantAnnotation.
-    \end{itemize}
-  \end{block}
-\end{frame}
-
-\begin{frame}{Annotation}
-  VariantAnnotation
-\end{frame}
-
-\begin{frame}{GenomicRanges and specific annotation}
-  
-\end{frame}
-
-
-%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%
-\section{Data exploration}
-%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%
+%%%%%%%%%
 
 \begin{frame}{Data exploration - All you can plot}
+  \centering
+  \uline{{\bf Answer your questions with plots !}}
+  \medskip
+
   \begin{block}{Utility}
     \begin{itemize}
     \item Get an idea of the quality of the data and potential issues.
@@ -412,7 +344,63 @@ for(n in 1:10){
   \end{block}
 \end{frame}
 
-\begin{frame}{QC plots}
+%%%%%%%%%
+
+\begin{xframe}[shrink=5]{Today's dataset - Methylation analysis}
+  \begin{block}{Goal}
+    Analyze methylation data following those principles. 
+  \end{block}
+  \begin{block}{DNA methylation data}
+    \begin{itemize}
+    \item Identify sample outliers (and remove them).
+    \item Identify co-variates (sex, age) using PCA.
+    \item Use heatmap to plot sample groupings.
+    \item Point out differentially methylated sites.
+    \item Plot methylation levels of interesting sites.
+    \end{itemize}
+  \end{block}
+  \begin{exampleblock}{The data set}
+\begin{verbatim}
+beta_value # The methylation data
+probe_data # The annotation of each probe
+pheno_data # The annotation of each sample (metadata)
+\end{verbatim}  
+  \end{exampleblock}
+  \begin{exampleblock}{Get to know your data}
+    Check the first few rows of each object (remember the {\sf head} function). Check the type and size of your data({\sf str}).
+  \end{exampleblock}
+\end{xframe}
+
+%%%%%%%
+
+\begin{frame}{Importing and manipulating large files}
+  Extra parameters for read.table: nb of lines, column classes.
+  \note{Not sure where to put this. If your data is not too big, maybe we can talk about it in the end, but it would be nice to tell them what not to do in the beginning.}
+\end{frame}
+
+%%%%%%%
+
+\begin{xframe}{Application - Identify outliers}
+  \begin{block}{Checking the distribution}
+    \begin{itemize}
+      \item Identify the {\sf case} samples. 
+      \item Take a look at the density of those samples.
+      \item Are there any samples that stand out ?
+    \end{itemize}
+  \end{block}
+  \begin{exampleblock}{Useful functions}
+\begin{verbatim}
+density(x) # Compute the density of x
+plot(x) # Create a plot of x
+plot(density(x)) # Plot the density of x
+\end{verbatim}
+  \end{exampleblock}
+  \note{Distribution of what? methylation ?}
+\end{xframe}
+
+%%%%%%%
+
+\begin{frame}{Quality Control plots}
   \begin{block}{Aim}
     Assess the quality of your data and potential artefacts that could bias your analysis.
   \end{block}
@@ -420,13 +408,16 @@ for(n in 1:10){
     \begin{itemize}
     \item Principal Component Analysis: representing the largest variation in the data.
     \item Clustering: summarizing similarity relations between samples/genes.
+    \item Heatmaps: 
     \item Testing metadata: gender, age, ...
     \end{itemize}
   \end{block}
-  \note{wikipedia cartoon for PCA, cluster tree}
+  \note{wikipedia cartoon for PCA, cluster tree\\How to define simply heatmaps and its utility...}
 \end{frame}
 
-\begin{xframe}[shrink=10]{QC plots - Functions}
+%%%%%%%%%
+
+\begin{xframe}[shrink=10]{Quality Control plots - Functions}
   \begin{block}{PCA using {\sf prcomp}}
     PCA of the matrix columns; plot of the variance explained by the first PCs; representation of the {\bf rows} using the first two PCs.
 \begin{verbatim}
@@ -449,35 +440,169 @@ mDeeS = isoMDS(cor.dist)
 plot(mDeeS$points)
 \end{verbatim}  
   \end{block}
-  \note{highlight the functions\\Importance of the distance demonstration}
+  \note{highlight the functions\\Importance of the distance demonstration maybe...}
 \end{xframe}
 
-\begin{frame}{Exercise/Example}
-  Do it on previous exercice
-\end{frame}
+%%%%%%%%%%
 
 \begin{frame}{Heatmaps}
   
 \end{frame}
 
-\begin{xframe}{Testing bias from metadata}
-  \begin{block}{Linear regression}
-    For example, between Principal Component and metadata. 
+%%%%%%%%%%
+
+\begin{xframe}{Application - Identify outliers}
+  \begin{block}{Using the PCA}
+    \begin{itemize}
+      \item Using all samples, plot the first 2 Principle Components.
+      \item Color the samples according to their Sample\_Group status. 
+      \item How do the outliers identified previously behave ?
+      \item Remove those samples from your data set (dont forget to propagate
+      the changes in all objects!).
+    \end{itemize}
   \end{block}
-  \begin{exampleblock}{}
+   \begin{exampleblock}{PCA example}
 \begin{verbatim}
-summary(lm(peeSeaAye$x[,1]~gender+age))
+pca <- prcomp(t(beta_value))
+plot(pca$x)
 \end{verbatim}  
   \end{exampleblock}
 \end{xframe}
 
-\begin{frame}{Exercice}
-  Plot: 
-  \begin{itemize}
-  \item the distribution of ....
-  \item the relation between ... and ...
-  \end{itemize}
+%%%%%%%
+
+%%%%%%%
+\begin{xframe}{Application - Identify phenotypic co-variates}
+  \begin{block}{Using the PCA}
+    \begin{itemize}
+      \item Re-compute the PCA without the outlier samples.
+      \item Plot the 1st PC with the age of the samples (do you notice
+      something ?)
+      \item Color the sample according to their Sample\_Group status
+      \item Re-compute the PCA using {\sf control} samples only.
+	  \item Does sex have an effect on data ?
+	  \item Knowing that females have 2 X chromosomes, 1 silenced by methylation
+	  are you able to predict the sex of the samples?
+	  \item Check your prediction in the PCA plot
+    \end{itemize}
+      \end{block}
+
+\end{xframe}
+
+%%%%%%%
+\begin{xframe}[shrink=5]{Application - Predicting the sex}
+  \begin{exampleblock}{Some tips}
+\begin{verbatim}
+# Here we assume that the X chromosome is more methylated
+# in females
+x_probes <- probe_data$chrom == "chrX"
+summary(x_probes)
+
+controls <- pheno_data$Sample_Group == "control"
+summary(controls)
+pca <- prcomp(t(beta_value[x_probes, controls]))
+mean_x_meth <- apply(beta_value[x_probes, controls], 2, mean)
+color_vec <- ifelse(mean_x_meth >= 0.45, "red", "blue")
+plot(pca$x, col=color_vec)
+\end{verbatim}  
+  \end{exampleblock}
+\end{xframe}
+
+%%%%%%%
+
+\begin{xframe}{Automated approach to identify metadata co-variates}
+  \begin{block}{Linear regression}
+    For example, between Principal Component and metadata. 
+    \begin{itemize}
+    \item Can be automated to test other Principal Components and numerous metadata. 
+    \item To make a decision on borderline/unclear cases.
+    \end{itemize}    
+  \end{block}
+  \begin{exampleblock}{Application}
+\begin{verbatim}
+summary(lm(pca$x[,1]~age))
+
+covar.test = summary(lm(pca$x~age))
+lapply(covar.test,function(l)l$coefficients[2,4])
+\end{verbatim}  
+  \end{exampleblock}
+  \note{I can finish this once I see the data}
+\end{xframe}
+
+
+%%%%%%%
+\begin{xframe}{Cluster the samples}
+  \begin{block}{Using the heatmap}
+    \begin{itemize}
+      \item We dont need to use the full data set (too big)
+      \item Let's find the 1,000 most variant sites and use them for clustering
+      \item Make the heatmap (see previous examples)
+      \item Color the sample according to their Sample\_Group status (use
+      ColSideColors=color\_vec in heatmap)
+    \end{itemize}
+      \end{block}
+    \begin{exampleblock}{Predicting the sex}
+\begin{verbatim}
+# Getting the 1,000 most variant sites
+#
+# Compute the variance
+probe_var <- apply(beta_value, 1, var)
+# Order them decreasingly
+probe_var <- order(probe_var, decreasing = T)
+# Get the top 1,000
+probe_var <- probe_var[1:1000]
+\end{verbatim}  
+  \end{exampleblock}   
+
+\end{xframe}
+
+%%%%%%%
+
+\begin{xframe}{Find differentially methylated sites}
+  \begin{block}{A t-test compares 2 distributions}
+    \begin{itemize}
+      \item We want to compare {\sf cases} vs {\sf controls} at each site
+      (loop)
+      \item First, make a boolean vector for cases and one for controls (we saw
+      how in previous slides)
+    \end{itemize}
+      \end{block}
+    \begin{exampleblock}{t-test, an example}
+\begin{verbatim}
+t.test(rnorm(100), rnorm(100))
+
+# Getting only the p-value
+t.test(rnorm(100), rnorm(100))$p.value
+
+\end{verbatim}  
+  \end{exampleblock}   
+    \begin{alertblock}{Non-parametric alternative}
+      Wilcoxon test using {\sf wiclox.test} is a rank based test.
+    \end{alertblock}
+\end{xframe}
+
+%%%%%%%%%
+
+\begin{xframe}{Plot differentially methylated sites}
+  \begin{block}{Using boxplots}
+    \begin{itemize}
+      \item Using a previously identified differentially methylated site make a
+      boxplot of this site for {\sf cases} and {\sf controls}.
+    \end{itemize}
+  \end{block}
+  
+  AN EXAMPLE OF WHAT PLOT THEY SHOULD AIM AT
+  
+\end{xframe}
+
+%%%%%%%
+
+
+\begin{frame}{GenomicRanges and specific annotation}
+  
 \end{frame}
+
+%%%%%
 
 \begin{frame}{Extra: {\sf ggplot2}}
   \begin{block}{Introduction}
@@ -602,162 +727,4 @@ files_content <- lapply(file_list, function(file) \{
 
 %%%%%%%
 
-\begin{xframe}{Complete study}
-  \begin{block}{DNA methylation data}
-    \begin{itemize}
-    \item Identify sample outliers (and remove them).
-    \item Identify co-variates (sex, age) using PCA.
-    \item Use heatmap to plot sample groupings.
-    \item Point out differentially methylated sites.
-    \item Plot methylation levels of interesting sites.
-    \end{itemize}
-  \end{block}
-  \begin{exampleblock}{The data set}
-\begin{verbatim}
-beta_value # The methylation data
-probe_data # The annotation of each probe
-pheno_data # The annotation of each sample (metadata)
-\end{verbatim}  
-  \end{exampleblock}
-  
-\begin{exampleblock}{Playing with the data}
-Check the first few rows of each object (remember the head() function)
-  \end{exampleblock}
-\end{xframe}
-%%%%%%%
-
-\begin{xframe}{Identify outliers}
-  \begin{block}{Checking the distribution}
-    \begin{itemize}
-      \item Identify the {\sf case} samples. 
-      \item Take a look at the density of those samples.
-      \item Are there any samples that stand out ?
-    \end{itemize}
-  \end{block}
-  \begin{exampleblock}{Useful functions}
-\begin{verbatim}
-density(x) # Compute the density of x
-plot(x) # Create a plot of x
-plot(denisty(x)) # Plot the density of x
-\end{verbatim}
-  \end{exampleblock}
-\end{xframe}
-
-%%%%%%%
-\begin{xframe}{Identify outliers}
-  \begin{block}{Using the PCA}
-    \begin{itemize}
-      \item Using all samples, plot the first 2 Principle Components.
-      \item Color the samples according to their Sample\_Group status. 
-      \item How do the outliers identified previously behave ?
-      \item Remove those samples from your data set (dont forget to propagate
-      the changes in all objects!).
-    \end{itemize}
-  \end{block}
-   \begin{exampleblock}{PCA example}
-\begin{verbatim}
-pca <- prcomp(t(beta_value))
-plot(pca$x)
-\end{verbatim}  
-  \end{exampleblock}
-\end{xframe}
-
-%%%%%%%
-
-%%%%%%%
-\begin{xframe}{Identify phenotypic co-variates}
-  \begin{block}{Using the PCA}
-    \begin{itemize}
-      \item Re-compute the PCA without the outlier samples.
-      \item Plot the 1st PC with the age of the samples (do you notice
-      something ?)
-      \item Color the sample according to their Sample\_Group status
-      \item Re-compute the PCA using {\sf control} samples only.
-	  \item Does sex have an effect on data ?
-	  \item Knowing that females have 2 X chromosomes, 1 silenced by methylation
-	  are you able to predict the sex of the samples?
-	  \item Check your prediction in the PCA plot
-    \end{itemize}
-      \end{block}
-
-\end{xframe}
-
-%%%%%%%
-\begin{xframe}{Predicting the sex}
-  \begin{exampleblock}{Some tips}
-    \begin{verbatim}
-# Here we assume that the X chromosome is more methylated
-# in females
-x_probes <- probe_data$chrom == "chrX"
-summary(x_probes)
-
-controls <- pheno_data$Sample_Group == "control"
-summary(controls)
-pca <- prcomp(t(beta_value[x_probes, controls]))
-mean_x_meth <- apply(beta_value[x_probes, controls], 2, mean)
-color_vec <- ifelse(mean_x_meth >= 0.45, "red", "blue")
-plot(pca$x, col=color_vec)
-    \end{verbatim}  
-  \end{exampleblock}
-\end{xframe}
-     
-
-%%%%%%%
-\begin{xframe}{Cluster the samples}
-  \begin{block}{Using the heatmap}
-    \begin{itemize}
-      \item We dont need to use the full data set (too big)
-      \item Let's find the 1,000 most variant sites and use them for clustering
-      \item Make the heatmap (see previous examples)
-      \item Color the sample according to their Sample\_Group status (use
-      ColSideColors=color\_vec in heatmap)
-    \end{itemize}
-      \end{block}
-    \begin{exampleblock}{Predicting the sex}
-\begin{verbatim}
-# Getting the 1,000 most variant sites
-#
-# Compute the variance
-probe_var <- apply(beta_value, 1, var)
-# Order them decreasingly
-probe_var <- order(probe_var, decreasing = T)
-# Get the top 1,000
-probe_var <- probe_var[1:1000]
-\end{verbatim}  
-  \end{exampleblock}   
-
-\end{xframe}
-
-%%%%%%%
-
-\begin{xframe}{Find differentially methylated sites}
-  \begin{block}{A t-test compares 2 distributions}
-    \begin{itemize}
-      \item We want to compare {\sf cases} vs {\sf controls} at each site
-      (loop)
-      \item First, make a boolean vector for cases and one for controls (we saw
-      how in previous slides)
-    \end{itemize}
-      \end{block}
-    \begin{exampleblock}{t-test, an example}
-\begin{verbatim}
-t.test(rnorm(100), rnorm(100))
-
-# Getting only the p-value
-t.test(rnorm(100), rnorm(100))$p.value
-
-\end{verbatim}  
-  \end{exampleblock}   
-\end{xframe}
-
-%%%%%%%
-\begin{xframe}{Plot differentially methylated sites}
-  \begin{block}{Using boxplots}
-    \begin{itemize}
-      \item Using a previously identified differentially methylated site make a
-      boxplot of this site for {\sf cases} and {\sf controls}.
-    \end{itemize}
-  \end{block}
-\end{xframe}
-%%%%%%%
 \end{document}
