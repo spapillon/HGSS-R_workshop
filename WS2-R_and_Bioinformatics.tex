@@ -679,8 +679,13 @@ plot(pca$x)
 	  \item Check your prediction in the PCA plot
     \end{itemize}
       \end{block}
-    \begin{exampleblock}{Predicting the sex}
-\begin{verbatim}
+
+\end{xframe}
+
+%%%%%%%
+\begin{xframe}{Predicting the sex}
+  \begin{exampleblock}{Some tips}
+    \begin{verbatim}
 # Here we assume that the X chromosome is more methylated
 # in females
 x_probes <- probe_data$chrom == "chrX"
@@ -692,10 +697,10 @@ pca <- prcomp(t(beta_value[x_probes, controls]))
 mean_x_meth <- apply(beta_value[x_probes, controls], 2, mean)
 color_vec <- ifelse(mean_x_meth >= 0.45, "red", "blue")
 plot(pca$x, col=color_vec)
-\end{verbatim}  
-  \end{exampleblock}   
-
+    \end{verbatim}  
+  \end{exampleblock}
 \end{xframe}
+     
 
 %%%%%%%
 \begin{xframe}{Cluster the samples}
