@@ -648,7 +648,7 @@ plot(denisty(x)) # Plot the density of x
   \begin{block}{Using the PCA}
     \begin{itemize}
       \item Using all samples, plot the first 2 Principle Components.
-      \item Color the samples according to their Sample_Group status. 
+      \item Color the samples according to their Sample\_Group status. 
       \item How do the outliers identified previously behave ?
       \item Remove those samples from your data set (dont forget to propagate
       the changes in all objects!).
@@ -671,13 +671,14 @@ plot(pca$x)
       \item Re-compute the PCA without the outlier samples.
       \item Plot the 1st PC with the age of the samples (do you notice
       something ?)
-      \item Color the sample according to their Sample_Group status
+      \item Color the sample according to their Sample\_Group status
       \item Re-compute the PCA using {\sf control} samples only.
 	  \item Does sex have an effect on data ?
 	  \item Knowing that females have 2 X chromosomes, 1 silenced by methylation
 	  are you able to predict the sex of the samples?
 	  \item Check your prediction in the PCA plot
     \end{itemize}
+      \end{block}
     \begin{exampleblock}{Predicting the sex}
 \begin{verbatim}
 # Here we assume that the X chromosome is more methylated
@@ -693,7 +694,7 @@ color_vec <- ifelse(mean_x_meth >= 0.45, "red", "blue")
 plot(pca$x, col=color_vec)
 \end{verbatim}  
   \end{exampleblock}   
-  \end{block}
+
 \end{xframe}
 
 %%%%%%%
@@ -703,9 +704,10 @@ plot(pca$x, col=color_vec)
       \item We dont need to use the full data set (too big)
       \item Let's find the 1,000 most variant sites and use them for clustering
       \item Make the heatmap (see previous examples)
-      \item Color the sample according to their Sample_Group status (use
-      ColSideColors=color_vec in heatmap)
+      \item Color the sample according to their Sample\_Group status (use
+      ColSideColors=color\_vec in heatmap)
     \end{itemize}
+      \end{block}
     \begin{exampleblock}{Predicting the sex}
 \begin{verbatim}
 # Getting the 1,000 most variant sites
@@ -718,7 +720,7 @@ probe_var <- order(probe_var, decreasing = T)
 probe_var <- probe_var[1:1000]
 \end{verbatim}  
   \end{exampleblock}   
-  \end{block}
+
 \end{xframe}
 
 %%%%%%%
@@ -731,6 +733,7 @@ probe_var <- probe_var[1:1000]
       \item First, make a boolean vector for cases and one for controls (we saw
       how in previous slides)
     \end{itemize}
+      \end{block}
     \begin{exampleblock}{t-test, an example}
 \begin{verbatim}
 t.test(rnorm(100), rnorm(100))
@@ -740,7 +743,6 @@ t.test(rnorm(100), rnorm(100))$p.value
 
 \end{verbatim}  
   \end{exampleblock}   
-  \end{block}
 \end{xframe}
 
 %%%%%%%
