@@ -73,15 +73,30 @@
 
 %%%%%%%
 
-\begin{frame}[label=handout]{Goal of the workshop}
-  \begin{itemize}
-  \item Explain and demonstrate some key principles to do good bioinformatics.
-  \item How to structure the analysis, how to write efficient script. 
-  \item What to do and not to do...
-    \bigskip
-  \item This is {\bf NOT} a package tutorial but will point at useful resources.
-  \end{itemize}
+\begin{frame}[label=handout]{Today's workshop}
+  \begin{block}{Goal}
+    \begin{itemize}
+    \item Explain and demonstrate some key principles to do good bioinformatics.
+    \item How to structure the analysis, how to write efficient script, explore your data. 
+    \item What to do and not to do...
+      \bigskip
+    \item This is {\bf NOT} a package tutorial but will point at useful resources.
+    \end{itemize}    
+  \end{block}
+  \medskip
+
+  \begin{block}{Learning from your mistakes}
+    You will get errors today, before raising your hand:
+    \begin{itemize}
+    \item Check your command for typos.
+    \item Try to understand the error message.
+    \item Check your input/objects. 
+    \end{itemize}    
+  \end{block}
 \end{frame}
+
+%%%%%%%
+
 
 %%%%%%%
 
@@ -311,22 +326,54 @@ for(n in 1:10){
   \note{Simon what interface do you use ?}
 \end{frame}
 
-\begin{frame}{Example}
-  
+\begin{frame}{Exercise}
+  \begin{block}{Goal}
+    Analyze some variant information from exome-sequencing following the principles presented before.
+  \end{block}
+  \begin{block}{Input data}
+    Genotype information for XX variants and YY samples, Y1 from controls and Y2 from cases.
+  \end{block}
+  \begin{block}{Analysis steps}
+    \begin{enumerate}
+    \item Filtering bad quality data: SNPs with no heterogeneity, too many missing values, Hardy-Weinberg equilibrium...
+    \item Compute some descriptive statistics: distribution of the frequencies.
+    \item Test differences between groups: t-test or equivalent, Wilcoxon test. 
+    \item Retrieve interesting cases: most significant and biggest effect size.
+    \end{enumerate}
+  \end{block}
 \end{frame}
 
-\begin{frame}{Big exercise}
-  
+\begin{frame}[label=justForUs]{More details on the functions}
+  \begin{block}{Filter function}
+    \begin{itemize}
+    \item Minor allele frequency threshold.
+    \item Minimum number of samples with non-missing values.
+    \item Hardy-Weinberg equilibrium.
+    \end{itemize}
+  \end{block}
+  \begin{block}{Statistics function}
+    \begin{itemize}
+    \item Minor allele frequency distribution
+    \end{itemize}
+  \end{block}
+  \begin{block}{Test function}
+    \begin{itemize}
+    \item Fisher-test.
+    \end{itemize}
+  \end{block}
+  \begin{block}{Extra information}
+    \begin{itemize}
+    \item VariantAnnotation.
+    \end{itemize}
+  \end{block}
 \end{frame}
 
-\section{Big Data Manipulation}
-
-\begin{frame}{Memory and reading files}
-  
+\begin{frame}{Importing large files}
+  Extra parameters for read.table: nb of lines, column classes.
 \end{frame}
 
-\begin{frame}{Memory and manipulating files}
-  
+\begin{frame}{Manipulating files}
+  No extensive concatenation, rbind, etc
 \end{frame}
 
 
@@ -405,18 +452,40 @@ plot(mDeeS$points)
   
 \end{frame}
 
-\begin{frame}{Testing bias from metadata}
-  
-\end{frame}
+\begin{xframe}{Testing bias from metadata}
+  \begin{block}{Linear regression}
+    For example, between Principal Component and metadata. 
+  \end{block}
+  \begin{exampleblock}{}
+\begin{verbatim}
+summary(lm(peeSeaAye$x[,1]~gender+age))
+\end{verbatim}  
+  \end{exampleblock}
+\end{xframe}
 
-\begin{frame}{Extra ggplot2 package}
+\begin{frame}{Extra: ggplot2 package}
   
 \end{frame}
 
 \section{More resource online}
 
-\begin{frame}{Online tutorials}
-  
+\begin{frame}[shrink=10]{Online tutorials}
+  \begin{block}{R}
+    \begin{itemize}
+    \item \url{http://www.twotorials.com/} : small video-tutorials.
+    \item \url{http://www.r-tutor.com/} : R and statistics small web-tutorials.
+    \item \url{www.youtube.com/user/rdpeng/} : Coursera {\it Computing for Data Analysis} videos. Other interesting videos, e.g. {\it ggplot2}.
+    \item \url{http://cran.r-project.org/manuals.html} : R manual.
+    \end{itemize}
+  \end{block}
+  \begin{block}{R and Bioinformatics}
+    \begin{itemize}
+    \item \url{http://stephenturner.us/p/edu} List of online resources for Bioinformatics.
+    \item \url{http://bioinformatics.ca/workshops/2013/} : Bioinformatics workshop material.
+    \item \url{http://manuals.bioinformatics.ucr.edu/home/R_BioCondManual} : Pieces of code for bioinformatics analysis, plots. Including Bioconductor.
+    \item \url{http://bioconductor.org/help/course-materials/2013/} : Bioinformatics tutorials material: pdf and R scripts.
+    \end{itemize}
+  \end{block}
 \end{frame}
 
 \begin{frame}{Useful packages}
