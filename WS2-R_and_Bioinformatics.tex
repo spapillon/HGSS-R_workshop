@@ -25,7 +25,7 @@
 \setbeamertemplate{blocks}[rounded][shadow=true]
 
 % Notes or not
-\setbeameroption{show notes}
+\setbeameroption{hide notes}
 %%\setbeamertemplate{note page}[plain]
 %%\pgfpagesuselayout{2 on 1}
 %%%%
@@ -147,7 +147,6 @@ test | !test          ## (TRUE)
 test & !test          ## (FALSE)
 \end{verbatim}  
   \end{exampleblock}
-  \note{Here I changed the $||$ and \&\& by the simple $|$ and \&. I know they should be used for vectorized test but it works and it's simpler for them to remember.}
 \end{xframe}
 
 %%%%%%%%%%%
@@ -192,8 +191,8 @@ which(5:10 > 6)                  ## 3,4,5,6
   \begin{block}{For more advanced users}
     Have a look at these functions on {\it logical} vectors:
     \begin{itemize}
-    \item any, $\%$ in$\%$.
-    \item sum, mean, table.
+    \item {\sf any}, $\%$in$\%$.
+    \item  {\sf sum},  {\sf mean},  {\sf table}.
     \end{itemize}
   \end{block}
 
@@ -221,35 +220,35 @@ if( Condition ){
 \end{verbatim}  
   \end{block}
   \begin{exampleblock}{Example}
-\begin{verbatim}
-if(length(luckyNumbers)>3){
-  cat("Too many lucky numbers.\n")
+\begin{Verbatim}[commandchars=\\\{\}]
+\color{blue}if(\color{black}length(luckyNumbers)>3\color{blue})\{
+  cat("Too many lucky numbers.")
   luckyNumbers = luckyNumbers[1:3]
-} else if(length(luckyNumbers)==3){
-  cat("Just enough lucky numbers.\n")
-} else {
-  cat("You need more lucky numbers.\n")
-}
-\end{verbatim}  
+\color{blue}\} else if(\color{black}length(luckyNumbers)==3\color{blue})\{
+cat("Just enough lucky numbers.")
+\color{blue}\} else \{
+  cat("You need more lucky numbers.")
+\color{blue}\}
+\end{Verbatim}  
   \end{exampleblock}
 \end{xframe}
 
 \begin{xframe}{Loops}
   \begin{block}{{\sf for} loops}
     Iterate over the element of a container and run instructions.
-\begin{verbatim}
-for(v in vec){
+\begin{Verbatim}[commandchars=\\\{\}]
+\color{blue}for(\color{black}v \color{blue}in \color{black}vec\color{blue})\{
 ...  Instruction
-}
-\end{verbatim}  
+\color{blue}\}
+\end{Verbatim}  
   \end{block}
   \begin{block}{{\sf while} loops}
     Run instructions as long as a condition is {\it TRUE}.
-\begin{verbatim}
-while( CONDITION ){
+\begin{Verbatim}[commandchars=\\\{\}]
+\color{blue}while( \color{black}CONDITION \color{blue})\{
 ...  Instruction
-}
-\end{verbatim}  
+\color{blue}\}
+\end{Verbatim}  
   \end{block}
   \begin{exampleblock}{Example}
 \begin{verbatim}
@@ -316,7 +315,6 @@ for(n in 1:10){
     \end{itemize}
 
   \end{block}
-  \note{Simon what interface do you use ?}
 \end{frame}
 
 %%%%%%%%%
@@ -373,14 +371,60 @@ pheno_data # The annotation of each sample (metadata)
 
 %%%%%%%
 
-\begin{frame}{Importing and manipulating large files}
-  Extra parameters for read.table: nb of lines, column classes.
-  \note{Not sure where to put this. If your data is not too big, maybe we can talk about it in the end, but it would be nice to tell them what not to do in the beginning.}
-\end{frame}
+\begin{xframe}{Importing large files more efficiently}
+  \begin{block}{Extra parameters in {\sf read.table}}
+    \begin{description}
+    \item[colClasses] a {\sf vector} with the data type of each column: e.g. {\it ``character''}, {\it ``numeric''}.
+    \item[nrows] the number of rows to read. {\tiny Potentially in combination with {\sf system} and {\sf wc}.}
+    \end{description}
+  \end{block}
+  \begin{block}{Read a file line by line (or by chunk)}
+\begin{verbatim}
+con = file(file.name)
+while(length(line = readLines(con,n=1))>0){
+... Instructions
+}
+\end{verbatim}      
+  \end{block}
+  \begin{alertblock}{To test the performance}
+\begin{verbatim}
+system.time({
+... Instructions
+})
+\end{verbatim}  
+  \end{alertblock}
+\end{xframe}
 
 %%%%%%%
 
-\begin{xframe}{Application - Identify outliers}
+\begin{xframe}{Manipulating large files: a classical error}
+  \begin{alertblock}{Don't do this !}
+    Concatenate iteratively on big data.
+
+\begin{verbatim}
+myMatrix = NULL
+for(i in 1:100000){
+... Instructions
+myMatrix = rbind(myMatrix, myNewLine)
+}
+\end{verbatim}  
+  \end{alertblock}
+  \begin{exampleblock}{Instead do this}
+    Create the data and then fill it.
+
+\begin{verbatim}
+myMatrix = matrix(NA,100000,100)
+for(i in 1:100000){
+... Instructions
+myMatrix[i,] = myNewLine
+}
+\end{verbatim}  
+  \end{exampleblock}
+\end{xframe}
+
+%%%%%%%
+
+\begin{xframe}{Identify outliers}
   \begin{block}{Checking the distribution}
     \begin{itemize}
       \item Identify the {\sf case} samples. 
@@ -395,7 +439,6 @@ plot(x) # Create a plot of x
 plot(density(x)) # Plot the density of x
 \end{verbatim}
   \end{exampleblock}
-  \note{Distribution of what? methylation ?}
 \end{xframe}
 
 %%%%%%%
@@ -408,11 +451,10 @@ plot(density(x)) # Plot the density of x
     \begin{itemize}
     \item Principal Component Analysis: representing the largest variation in the data.
     \item Clustering: summarizing similarity relations between samples/genes.
-    \item Heatmaps: 
+    \item Heatmaps: summary of the clustering on both row and columns.
     \item Testing metadata: gender, age, ...
     \end{itemize}
   \end{block}
-  \note{wikipedia cartoon for PCA, cluster tree\\How to define simply heatmaps and its utility...}
 \end{frame}
 
 %%%%%%%%%
@@ -431,6 +473,7 @@ text(peeSeaAye$x,labels=rownames(input.matrix))
     Clustering using a \uline{distance} matrix, e.g. from correlation between {\bf columns}.
 \begin{verbatim}
 cor.dist = as.dist(1-cor(input.matrix))
+euc.dist = dist(input.matrix)
 
 kleusteur = hclust(cor.dist,method="ward")
 plot(kleusteur)
@@ -440,14 +483,21 @@ mDeeS = isoMDS(cor.dist)
 plot(mDeeS$points)
 \end{verbatim}  
   \end{block}
-  \note{highlight the functions\\Importance of the distance demonstration maybe...}
 \end{xframe}
 
 %%%%%%%%%%
 
-\begin{frame}{Heatmaps}
+\begin{xframe}{Heatmaps}
+  \centering
+  \begin{block}{Using {\sf heatmap} function}
+\begin{verbatim}
+heatmap(input.matrix)
+\end{verbatim}  
+  \end{block}
   
-\end{frame}
+  \includegraphics[height=.7\textheight]{imgs/heatmap-example.png}
+  
+\end{xframe}
 
 %%%%%%%%%%
 
@@ -520,13 +570,16 @@ plot(pca$x, col=color_vec)
   \end{block}
   \begin{exampleblock}{Application}
 \begin{verbatim}
-summary(lm(pca$x[,1]~age))
+summary(lm(pca$x[,1]~pheno_data$age))
+summary(lm(pca$x[,2]~pheno_data$age))
+summary(lm(pca$x[,3]~pheno_data$age))
 
-covar.test = summary(lm(pca$x~age))
-lapply(covar.test,function(l)l$coefficients[2,4])
+covar.test = summary(lm(pca$x~pheno_data$age))
+covar.test.pv = unlist(lapply(covar.test,function(l)
+    1-pf(l$fstatistic[1],l$fstatistic[2],l$fstatistic[3])))
+covar.test.pv[covar.test.pv<.01]
 \end{verbatim}  
   \end{exampleblock}
-  \note{I can finish this once I see the data}
 \end{xframe}
 
 
@@ -577,7 +630,7 @@ t.test(rnorm(100), rnorm(100))$p.value
 \end{verbatim}  
   \end{exampleblock}   
     \begin{alertblock}{Non-parametric alternative}
-      Wilcoxon test using {\sf wiclox.test} is a rank based test.
+      Wilcoxon test using {\sf wilcox.test} is a rank based test.
     \end{alertblock}
 \end{xframe}
 
@@ -591,16 +644,63 @@ t.test(rnorm(100), rnorm(100))$p.value
     \end{itemize}
   \end{block}
   
-  AN EXAMPLE OF WHAT PLOT THEY SHOULD AIM AT
+  \centering
+  \includegraphics[height=.6\textheight,page=4]{imgs/example-ggplot2.pdf}
   
 \end{xframe}
 
 %%%%%%%
 
+\begin{xframe}{GenomicRanges...}
+  \begin{block}{Introduction}
+    Represents genomic intervals. All annotation can be represented through {\it GenomicRanges} objects.
+  \end{block}
+  \begin{block}{Creation}
+\begin{Verbatim}[commandchars=\\\{\}]
+myGR = GRanges(\color{red}chrs\color{black}, IRanges(start=\color{red}starts\color{black},end=\color{red}ends\color{black}))
+\end{Verbatim}      
+  \end{block}
+  \begin{block}{Overlaping intervals}
+\begin{verbatim}
+myOverlap = findOverlaps(myGR, genes.GR)
+queryHits(myOverlap)
+length(unique(queryHits(myOverlap)))
+\end{verbatim}      
+  \end{block}
+  \begin{block}{Distance to nearest}
+\begin{verbatim}
+distToGene = distanceToNearest(myGR, genes.GR)
+which(distToGene < 100)
+\end{verbatim}      
+  \end{block}
+\end{xframe}
 
-\begin{frame}{GenomicRanges and specific annotation}
-  
-\end{frame}
+%%%%%
+
+\begin{xframe}[shrink=10]{...and annotation}
+  \begin{block}{Introduction}
+    Many annotation are already available directly from R, see Bioconductor website. Else you can create your own {\it GenomicRanges} object.
+  \end{block}
+  \begin{block}{TxDb}
+    Gene annotation.
+\begin{verbatim}
+source("http://bioconductor.org/biocLite.R")
+biocLite("TxDb.Hsapiens.UCSC.hg19.knownGene")
+library(TxDb.Hsapiens.UCSC.hg19.knownGene)
+\end{verbatim}      
+  \end{block}
+  \begin{block}{AnnotationHub}
+    Many different tracks, including most of Encode's.
+\begin{verbatim}
+source("http://bioconductor.org/biocLite.R")
+biocLite("AnnotationHub")
+library(AnnotationHub)
+ah = AnnotationHub()
+ctcf.tfbs = ah$goldenpath.hg19.encodeDCC.wgEncodeUwTfbs.
+      wgEncodeUwTfbsMcf7CtcfStdPkRep1.narrowPeak_0.0.1.RData
+\end{verbatim}      
+\end{block}
+\end{xframe}
 
 %%%%%
 
@@ -609,7 +709,8 @@ t.test(rnorm(100), rnorm(100))$p.value
     A package to constuct beautiful and/or complex graphs. Many aspects of the graph are arranged automatically but everything can be specified. Easy layers addition.
   \end{block}
   
-  EXAMPLE
+  \includegraphics[height=.6\textheight]{imgs/example-ggplot2.pdf}
+  \includegraphics[height=.6\textheight,page=2]{imgs/example-ggplot2.pdf}
 
 \end{frame}
 
@@ -640,10 +741,28 @@ gene.expression.df = subset(gene.expression.df, gene.expression>1)
   \end{exampleblock}
 \end{xframe}
 
-\begin{xframe}{Extra: {\sf ggplot2} - Simple graph}
-  \begin{block}{}
-    
+\begin{xframe}{Extra: {\sf ggplot2}}
+  \begin{block}{Simple graph - Histogram}
+\begin{verbatim}
+df.to.plot = data.frame(value=rnorm(1000))
+library(ggplot2)
+ggplot(df.to.plot,aes(x=value)) + geom_histogram()
+\end{verbatim}      
   \end{block}
+  \begin{block}{More complex graph}
+    Putting a color for each group and different panels for each probe.
+\begin{verbatim}
+ggplot(beta.df, aes(x=methylation)) + 
+   geom_density(aes(fill=group,colour=group),alpha=.7) + 
+   facet_wrap(~probe)
+\end{verbatim}      
+  \end{block}
+  \begin{exampleblock}{Learn from the examples there}
+    \begin{itemize}
+    \item \url{http://docs.ggplot2.org/current/}
+    \item \url{http://www.cookbook-r.com/Graphs/}
+    \end{itemize}
+  \end{exampleblock}
 \end{xframe}
 
 \section{More resource online}
@@ -667,13 +786,17 @@ gene.expression.df = subset(gene.expression.df, gene.expression>1)
   \end{block}
 \end{frame}
 
-\begin{frame}{Useful packages}
-  \begin{description}
-  \item[GenomicRanges] 
-  \item[AnnotationHub]
-  \item[TxBD]
-  \end{description}
+
+\begin{frame}{Thank you !!}
+  \centering
+  If you're interested in potentially {\bf more sessions}, in different format ({\bf more often, more specific}), maybe some kind of {\bf R club}, let us know through the {\bf survey} or by email.
+
+  \bigskip
+  \bigskip
+
+  \uline{\href{mailto:jean.monlong@mail.mcgill.ca}{jean.monlong@mail.mcgill.ca}}
 \end{frame}
+
 
 \section{Extra slides}
 
