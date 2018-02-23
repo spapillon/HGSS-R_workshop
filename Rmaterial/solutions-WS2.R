@@ -77,6 +77,9 @@ meanCols.for(matrix(1:12,3,4))
 meanCols.while(matrix(1:12,3,4))
 
 
+
+
+
 #######
 ## Methylation analysis
 #######
@@ -158,7 +161,6 @@ pca.x.controls <- prcomp(t(beta_value[x_probes, controls.index]))
 mean_x_meth <- apply(beta_value[x_probes, controls.index], 2, mean)
 color_x_meth<- ifelse(mean_x_meth >= 0.45, "red", "blue")
 plot(pca.x.controls$x, col=color_x_meth)
-plot(pca.controls$x, col=color_x_meth)
 
 ### More advanced: automatic detection of metadata captured by PCs through linear regression
 age.test = summary(lm(pca.noOutliers$x~pheno_data$age)) ## Linear regression between each PC(pca$x column) and age
@@ -178,9 +180,9 @@ plot(pca.noOutliers$x[,2],pheno_data$Slide,col=color_vector,xlab="PC2",ylab="Sli
 #### Differential methylation expression (on the first 10000 probes)
 
 ## t.test should be used on normal data: are the methylation values normal ?
-## Normality test on controls: for fun !
+## Normality test on controls: extra, for fun !
 norm.test.pv = apply(beta_value[1:10000,controls.index],1,function(r)shapiro.test(r)$p.value)
-hist(norm.test.pv)  ## Many values close to 0...anyway let's use t.test anyway (but 'wilcox.test' is non-parametrical and would be safer)
+hist(norm.test.pv)  ## Many values close to 0...let's use 't.test' anyway (but 'wilcox.test' is non-parametrical and would be safer)
 
 ## T test on each probes(rows)
 diff.meth.pv = apply(beta_value[1:10000,],1,function(r)t.test(r[controls.index],r[-controls.index])$p.value)
@@ -196,6 +198,7 @@ sig.probes.names = rownames(beta_value)[dm.i]
 ## Simple boxplot
 boxplot(list(controls=beta_value[dm.i[1],controls.index],cases=beta_value[dm.i[1],-controls.index]),main=sig.probes.names[1],ylab="methylation")
 
+
 #### Advanced plotting with ggplot2
 library(ggplot2)
 
@@ -208,7 +211,7 @@ beta.df$age=pheno_data[as.character(beta.df$sample),"age"]
 head(beta.df)
 
 ## Simple boxplot
-ggplot(subset(beta.df,probe==sig.probes.names[1]),aes(x=group,y=methylation)) + geom_boxplot(aes(fill=group))
+ggplot(subset(beta.df,probe==sig.probes.names[1]),aes(x=group,y=methylation)) + geom_boxplot(aes(fill=group)) + ggtitle(sig.probes.names[1])
 
 ## Simple boxplot + faceting(9 panels)
 ggplot(beta.df,aes(x=group,y=methylation)) + geom_boxplot(aes(fill=group)) + facet_wrap(~probe)
@@ -223,34 +226,37 @@ ggplot(beta.df, aes(x=methylation)) + geom_density(aes(fill=group,colour=group),
 ggplot(beta.df, aes(x=probe,y=methylation)) + geom_boxplot(aes(fill=group)) + theme(legend.position="bottom") + scale_fill_hue(name="") + coord_flip() + xlab("")
 
 ## Other plots with ggplot2
-## Density for one sample
+## Density for one sample, e.g. 13th column
 dens.df = data.frame(methylation=beta_value[,13])
 ggplot(dens.df, aes(x=methylation)) + geom_density()
 ggplot(dens.df, aes(x=methylation)) + geom_histogram()
 
 
 ## Annotation
+library(GenomicRanges)
 source("http://bioconductor.org/biocLite.R")
 biocLite("TxDb.Hsapiens.UCSC.hg19.knownGene")
 library(TxDb.Hsapiens.UCSC.hg19.knownGene)
 transcripts.gr = transcripts(TxDb.Hsapiens.UCSC.hg19.knownGene)
 
-library(GenomicRanges)
-meth.gr = GRanges(probe_data[1:10000,1],IRanges(start=probe_data[1:10000,2],end=probe_data[1:10000,3]))
+meth.gr = GRanges(probe_data[1:10000,1],IRanges(start=probe_data[1:10000,2],end=probe_data[1:10000,2]))
 mcols(meth.gr)$probe = rownames(beta_value)[1:10000]
 mcols(meth.gr)$pv = diff.meth.pv
+meth.gr
 
-gene.overlap = findOverlap(meth.gr, transcripts)
+gene.overlap = findOverlaps(meth.gr, transcripts.gr)
 gene.overlap
+length(unique(queryHits(gene.overlap))) ## How many probes overlap a known transcript
 
-dist.gene = distanceToNearest(meth.gr, TxDb.Hsapiens.UCSC.hg19.knownGene)
-mcols(meth.gr)$distanceToGene = dist.gene$distance
+dist.gene = distanceToNearest(meth.gr, transcripts.gr)
+mcols(meth.gr)$distanceToGene = as.data.frame(dist.gene)$distance
 meth.gr
 
 ## Plotting the distance to gene
-ggplot(mcols(meth.gr),aes(x=distance)) + geom_histogram()
-ggplot(mcols(meth.gr),aes(x=distance)) + geom_histogram() + xlim(0,1000)
-ggplot(mcols(meth.gr),aes(x=distance)) + geom_histogram() + xlim(0,100)
+meth.gr.df = as.data.frame(mcols(meth.gr))
+ggplot(meth.gr.df,aes(x=distanceToGene)) + geom_histogram()
+ggplot(meth.gr.df,aes(x=distanceToGene)) + geom_histogram() + xlim(0,1000)
+ggplot(meth.gr.df,aes(x=distanceToGene)) + geom_histogram() + xlim(1,1000)
 
-ggplot(mcols(meth.gr),aes(x=distance)) + geom_density(aes(colour=pv<.01)) + xlim(1,100)
-
+ggplot(meth.gr.df,aes(x=distanceToGene)) + stat_ecdf(aes(colour=pv<.01)) + xlim(1,1000) + ylab("proportion of probes")
+ggplot(meth.gr.df,aes(x=distanceToGene,y=-log10(pv))) + geom_bin2d() + xlim(1,1000)
